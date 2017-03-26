@@ -1,5 +1,7 @@
 # dux_fixed
 
+[![Build Status](https://api.travis-ci.org/jyaif/dux_fixed.svg)](https://travis-ci.org/jyaif/dux_fixed)
+
 dux_fixed is a library handling fixed point calculation.
 
 * Only handles 52:12 fixed point values.
