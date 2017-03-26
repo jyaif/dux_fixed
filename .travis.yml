@@ -4,10 +4,10 @@ language: cpp
 
 compiler:
   - clang
-  
-before_script:
+
+script:
   - mkdir out
   - cd out
   - cmake ..
-
-script: make
+  - make
+  - ./dux_fixed_test_bin
