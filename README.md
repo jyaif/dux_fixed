@@ -5,8 +5,9 @@
 dux_fixed is a library handling fixed point calculation.
 
 * Only handles 52:12 fixed point values.
+* Not optimized.
 * Written in C++11.
-* Code follows the Chromium code style.
+* Follows the Chromium code style.
 * MIT license.
 
 To run tests locally (requires cmake):
