@@ -16,6 +16,9 @@ FInt sin(FInt angle);
 // Returns the principal value of the arc tangent of y/x.
 FInt atan2(FInt y, FInt x);
   
+// Returns an angle in radian from an angle in degrees.
+FInt ToRadian(FInt angle);
+  
 // Generates and prints the lookup tables used in the implementation.
 void generateLookupTables();
 

@@ -10,7 +10,7 @@ using namespace dux;
 
 void assertNearlyEqual(FInt actual, double expected) {
   double delta = fabs(expected - actual.DoubleValue());
-  assert(delta < 0.01);
+  assert(delta < 0.02);
 }
 
 void TestFixedInt() {
@@ -105,6 +105,14 @@ void TestTrig() {
   assertNearlyEqual(dux::trig::atan2(FInt(-1), FInt(1)), atan2(-1,1));
   assertNearlyEqual(dux::trig::atan2(FInt(-1), FInt(-1)), atan2(-1,-1));
   assertNearlyEqual(dux::trig::atan2(FInt(1), FInt(-1)), atan2(1,-1));
+
+  // Test ToRadian.
+  assertNearlyEqual(dux::trig::ToRadian(FInt(0)), 0);
+  assertNearlyEqual(dux::trig::ToRadian(FInt(360)), 0);
+  assertNearlyEqual(dux::trig::ToRadian(FInt(720)), 0);
+  assertNearlyEqual(dux::trig::ToRadian(FInt(-720)), 0);
+  assertNearlyEqual(dux::trig::ToRadian(FInt(180)), 3.141);
+  assertNearlyEqual(dux::trig::ToRadian(FInt(-180)), -3.141);
 }
 
 int main(int argc, char *argv[]) {

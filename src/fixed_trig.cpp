@@ -244,6 +244,16 @@ FInt atan2(FInt y, FInt x) {
   return FInt::FromRawValue(0);
 }
 
+FInt ToRadian(FInt angle) {
+  if (angle.raw_value_ >= (360 << FInt::kShift))
+    angle.raw_value_ %= (360 << FInt::kShift);
+  if (angle.raw_value_ <= -(360 << FInt::kShift))
+    angle.raw_value_ = - (-angle.raw_value_ % (360 << FInt::kShift));
+  // Precision of conversion can be improved.
+  // 57 = 1 / ((Pi * 2) / 360)
+  return FInt::FromRawValue(angle.raw_value_ / 57);
+}
+
 void generateLookupTables() {
   std::vector<FInt> cosTable;
   std::vector<FInt> sinTable;
