@@ -8,25 +8,34 @@ namespace dux {
 // Class encapsulating 52-12 fixed point numbers.
 class FInt {
  public:
-  
   // Initializes to 0.
-  FInt();
+  constexpr FInt() : raw_value_(0) {
+    static_assert(kHalfShift * 2 == kShift, "");
+    static_assert(kFractionMask == (1 << kShift) - 1, "");
+    static_assert(kFractionMask == ~kIntegerMask, "");
+  };
 
   // Sets the integral part of the fixed point number to |value|.
-  explicit FInt(int32_t value);
-  
+  constexpr explicit FInt(int32_t value)
+      : raw_value_(((RawType)value) << kShift){};
+
   // Copy constructor.
-  FInt(FInt const& value);
+  constexpr FInt(FInt const& o) : raw_value_(o.raw_value_){};
 
   // Creates a fixed point number from the underlying representation.
-  static FInt FromRawValue(int64_t value);
+  constexpr static FInt FromRawValue(int64_t value) {
+    FInt i;
+    i.raw_value_ = value;
+    return i;
+  };
 
   // Creates a fixed point number from the result of the operation
   // numerator/denominator.
-  static FInt FromFraction(int32_t numerator, int32_t denominator);
-
-  // Creates a fixed point number from |value|.
-  static FInt FromDouble(double value);
+  constexpr static FInt FromFraction(int32_t numerator, int32_t denominator) {
+    FInt i(numerator);
+    i.raw_value_ /= denominator;
+    return i;
+  }
 
   // Returns the integral part of the fixed point number.
   int32_t Int32() const;
@@ -55,8 +64,9 @@ class FInt {
 
   FInt operator+(const FInt&) const;
   FInt operator-(const FInt&) const;
-  FInt operator*(const FInt&) const;
+  FInt operator*(const FInt&)const;
   FInt operator/(const FInt&) const;
+  FInt operator%(const FInt&) const;
   FInt operator-() const;
 
   FInt operator++();
@@ -66,6 +76,7 @@ class FInt {
   void operator-=(const FInt&);
   void operator*=(const FInt&);
   void operator/=(const FInt&);
+  void operator%=(const FInt&);
   void operator>>=(int shift);
   void operator<<=(int shift);
 
@@ -75,6 +86,11 @@ class FInt {
   bool operator<=(const FInt&) const;
   bool operator>(const FInt&) const;
   bool operator>=(const FInt&) const;
+
+  FInt operator*(const int32_t) const;
+  FInt operator/(const int32_t) const;
+  void operator*=(const int32_t);
+  void operator/=(const int32_t);
 
   using RawType = int64_t;
   RawType raw_value_;
@@ -87,10 +103,11 @@ class FInt {
   static const FInt kMin;
   static const FInt kZero;
   static const FInt kHalfPi;
+  static const FInt kQuarterPi;
   static const FInt kPi;
   static const FInt kTwoPi;
 };
-  
+
 }  // namespace dux
 
 #endif  // DUX_FIXED_FIXED_INT_H_

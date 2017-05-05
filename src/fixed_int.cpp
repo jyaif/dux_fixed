@@ -8,38 +8,9 @@ const FInt FInt::kMax = FInt::FromRawValue(0x7ffffffffffffffLL);
 const FInt FInt::kMin = FInt::FromRawValue(0xffffffffffffffffLL);
 const FInt FInt::kZero = FInt::FromRawValue(0LL);
 const FInt FInt::kHalfPi = FInt::FromRawValue(6434LL);
+const FInt FInt::kQuarterPi = FInt::FromRawValue(3217LL);
 const FInt FInt::kPi = FInt::FromRawValue(12868LL);
 const FInt FInt::kTwoPi = FInt::FromRawValue(25736LL);
-
-FInt FInt::FromRawValue(int64_t value) {
-  FInt i;
-  i.raw_value_ = value;
-  return i;
-}
-
-FInt FInt::FromFraction(int32_t numerator, int32_t denominator) {
-  FInt i(numerator);
-  i.raw_value_ /= denominator;
-  return i;
-}
-
-FInt FInt::FromDouble(double value) {
-  return FInt::FromFraction(value * (1 << kShift), (1 << kShift));
-}
-
-FInt::FInt() {
-  static_assert(kHalfShift * 2 == kShift, "");
-  static_assert(kFractionMask == (1 << kShift) - 1, "");
-  static_assert(kFractionMask == ~kIntegerMask, "");
-  raw_value_ = 0;
-}
-
-FInt::FInt(int value) {
-  raw_value_ = value;
-  raw_value_ <<= kShift;
-}
-
-FInt::FInt(FInt const& o) { raw_value_ = o.raw_value_; }
 
 int32_t FInt::Int32() const {
   return static_cast<int32_t>(raw_value_ >> kShift);
@@ -118,6 +89,11 @@ FInt FInt::operator/(const FInt& o) const {
   return i;
 }
 
+FInt FInt::operator%(const FInt& o) const {
+  assert(o.raw_value_ != 0);
+  return dux::FInt::FromRawValue(raw_value_ % o.raw_value_);
+}
+
 FInt FInt::operator-() const {
   FInt i;
   i.raw_value_ = -raw_value_;
@@ -134,9 +110,13 @@ FInt FInt::operator--() {
   return *this;
 }
 
-void FInt::operator+=(const FInt& o) { raw_value_ += o.raw_value_; }
+void FInt::operator+=(const FInt& o) {
+  raw_value_ += o.raw_value_;
+}
 
-void FInt::operator-=(const FInt& o) { raw_value_ -= o.raw_value_; }
+void FInt::operator-=(const FInt& o) {
+  raw_value_ -= o.raw_value_;
+}
 
 void FInt::operator*=(const FInt& o) {
   raw_value_ *= o.raw_value_;
@@ -149,9 +129,38 @@ void FInt::operator/=(const FInt& o) {
   raw_value_ /= o.raw_value_;
 }
 
-void FInt::operator>>=(int shift) { raw_value_ >>= shift; }
+void FInt::operator%=(const FInt& o) {
+  assert(o.raw_value_ > 0);
+  raw_value_ %= o.raw_value_;
+}
 
-void FInt::operator<<=(int shift) { raw_value_ <<= shift; }
+void FInt::operator>>=(int shift) {
+  raw_value_ >>= shift;
+}
+
+void FInt::operator<<=(int shift) {
+  raw_value_ <<= shift;
+}
+
+void FInt::operator*=(const int32_t v) {
+  raw_value_ *= v;
+}
+
+void FInt::operator/=(const int32_t v) {
+  raw_value_ /= v;
+}
+
+FInt FInt::operator*(const int32_t v) const {
+  FInt i;
+  i.raw_value_ = raw_value_ * v;
+  return i;
+}
+
+FInt FInt::operator/(const int32_t v) const {
+  FInt i;
+  i.raw_value_ = raw_value_ / v;
+  return i;
+}
 
 bool FInt::operator!=(const FInt& o) const {
   return raw_value_ != o.raw_value_;
