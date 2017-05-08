@@ -1,5 +1,5 @@
-#ifndef DUX_FIXED_FIXED_INT_H_
-#define DUX_FIXED_FIXED_INT_H_
+#ifndef DUX_FIXED_SRC_FIXED_INT_H_
+#define DUX_FIXED_SRC_FIXED_INT_H_
 
 #include <cstdint>
 
@@ -35,6 +35,11 @@ class FInt {
     FInt i(numerator);
     i.raw_value_ /= denominator;
     return i;
+  }
+
+  // Creates a fixed point number from a double.
+  constexpr static FInt FromDouble(double value) {
+    return FInt::FromFraction(value * (1 << FInt::kShift), (1 << FInt::kShift));
   }
 
   // Returns the integral part of the fixed point number.
@@ -110,4 +115,4 @@ class FInt {
 
 }  // namespace dux
 
-#endif  // DUX_FIXED_FIXED_INT_H_
+#endif  // DUX_FIXED_SRC_FIXED_INT_H_

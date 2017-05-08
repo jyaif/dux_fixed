@@ -1,5 +1,5 @@
-#ifndef DUX_FILED_FIXED_TRIG_H_
-#define DUX_FILED_FIXED_TRIG_H_
+#ifndef DUX_FILED_SRC_FIXED_TRIG_H_
+#define DUX_FILED_SRC_FIXED_TRIG_H_
 
 #include "fixed_int.h"
 
@@ -37,4 +37,4 @@ void GenerateLookupTables();
 
 }  // namespace dux
 
-#endif  // DUX_FILED_FIXED_TRIG_H_
+#endif  // DUX_FILED_SRC_FIXED_TRIG_H_

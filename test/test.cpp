@@ -13,10 +13,6 @@ void AssertNearlyEqual(FInt actual, double expected) {
   double delta = fabs(expected - actual.DoubleValue());
   assert(delta < 0.02);
 }
-
-FInt FromDouble(double value) {
-  return FInt::FromFraction(value * (1 << FInt::kShift), (1 << FInt::kShift));
-}
   
 }  // namespace
 
@@ -39,39 +35,39 @@ void TestFixedInt() {
   assert(FInt(0).Floor() == FInt(0));
   // Positive values.
   assert(FInt(1).Floor() == FInt(1));
-  assert(FromDouble(1.1).Floor() == FInt(1));
-  assert(FromDouble(1.9).Floor() == FInt(1));
-  assert(FromDouble(1000.001).Floor() == FInt(1000));
+  assert(FInt::FromDouble(1.1).Floor() == FInt(1));
+  assert(FInt::FromDouble(1.9).Floor() == FInt(1));
+  assert(FInt::FromDouble(1000.001).Floor() == FInt(1000));
   // Negative values.
   assert(FInt(-1).Floor() == FInt(-1));
   assert(FInt(-10).Floor() == FInt(-10));
-  assert(FromDouble(-1.1).Floor() == FInt(-2));
-  assert(FromDouble(-1.9).Floor() == FInt(-2));
-  assert(FromDouble(-1000.001).Floor() == FInt(-1001));
+  assert(FInt::FromDouble(-1.1).Floor() == FInt(-2));
+  assert(FInt::FromDouble(-1.9).Floor() == FInt(-2));
+  assert(FInt::FromDouble(-1000.001).Floor() == FInt(-1001));
   
   // Test |Ceil|.
   assert(FInt(0).Ceil() == FInt(0));
   // Positive values.
   assert(FInt(1).Ceil() == FInt(1));
-  assert(FromDouble(1.1).Ceil() == FInt(2));
-  assert(FromDouble(1.9).Ceil() == FInt(2));
+  assert(FInt::FromDouble(1.1).Ceil() == FInt(2));
+  assert(FInt::FromDouble(1.9).Ceil() == FInt(2));
   // Negative values.
   assert(FInt(-1).Ceil() == FInt(-1));
-  assert(FromDouble(-1.1).Ceil() == FInt(-1));
-  assert(FromDouble(-1.9).Ceil() == FInt(-1));
+  assert(FInt::FromDouble(-1.1).Ceil() == FInt(-1));
+  assert(FInt::FromDouble(-1.9).Ceil() == FInt(-1));
   
   // Test |Round|.
   assert(FInt(0).Round() == FInt(0));
   // Positive values.
-  assert(FromDouble(0.45).Round() == FInt(0));
-  assert(FromDouble(0.55).Round() == FInt(1));
-  assert(FromDouble(10.45).Round() == FInt(10));
-  assert(FromDouble(10.55).Round() == FInt(11));
+  assert(FInt::FromDouble(0.45).Round() == FInt(0));
+  assert(FInt::FromDouble(0.55).Round() == FInt(1));
+  assert(FInt::FromDouble(10.45).Round() == FInt(10));
+  assert(FInt::FromDouble(10.55).Round() == FInt(11));
   // Negative values.
-  assert(FromDouble(-0.45).Round() == FInt(0));
-  assert(FromDouble(-0.55).Round() == FInt(-1));
-  assert(FromDouble(-10.45).Round() == FInt(-10));
-  assert(FromDouble(-10.55).Round() == FInt(-11));
+  assert(FInt::FromDouble(-0.45).Round() == FInt(0));
+  assert(FInt::FromDouble(-0.55).Round() == FInt(-1));
+  assert(FInt::FromDouble(-10.45).Round() == FInt(-10));
+  assert(FInt::FromDouble(-10.55).Round() == FInt(-11));
   
   // Test |Sqrt|.
   assert(FInt(144).Sqrt() == FInt(12));
