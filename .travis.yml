@@ -9,11 +9,11 @@ addons:
             - ubuntu-toolchain-r-test
         packages:
             - clang-5.0
-  
+
 language: cpp
 
 compiler:
-  - clang
+  - clang-5.0
 
 script:
   - mkdir out
