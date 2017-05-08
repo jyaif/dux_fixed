@@ -10,10 +10,12 @@ addons:
         packages:
             - clang-5.0
 
+install: export CXX="clang++-5.0" CC="clang-5.0"
+
 language: cpp
 
 compiler:
-  - clang-5.0
+  - clang
 
 script:
   - mkdir out
