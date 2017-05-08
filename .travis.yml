@@ -1,6 +1,6 @@
 sudo: required
 
-# clang-3.4 or later required to support c++14.
+# clang-3.5 or later required to support -std=c++14.
 # http://clang.llvm.org/cxx_status.html
 addons:
     apt:
@@ -8,7 +8,7 @@ addons:
             - llvm-toolchain-precise
             - ubuntu-toolchain-r-test
         packages:
-            - clang-3.4
+            - clang-3.5
   
 language: cpp
 
