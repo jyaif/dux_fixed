@@ -64,42 +64,6 @@ FInt FInt::Sqrt() const {
   return i;
 }
 
-FInt FInt::operator+(const FInt& o) const {
-  FInt i;
-  i.raw_value_ = raw_value_ + o.raw_value_;
-  return i;
-}
-
-FInt FInt::operator-(const FInt& o) const {
-  FInt i;
-  i.raw_value_ = raw_value_ - o.raw_value_;
-  return i;
-}
-
-FInt FInt::operator*(const FInt& o) const {
-  FInt i;
-  i.raw_value_ = (raw_value_ * o.raw_value_) >> kShift;
-  return i;
-}
-
-FInt FInt::operator/(const FInt& o) const {
-  FInt i;
-  assert(o.raw_value_ != 0);
-  i.raw_value_ = (raw_value_ << kShift) / o.raw_value_;
-  return i;
-}
-
-FInt FInt::operator%(const FInt& o) const {
-  assert(o.raw_value_ != 0);
-  return dux::FInt::FromRawValue(raw_value_ % o.raw_value_);
-}
-
-FInt FInt::operator-() const {
-  FInt i;
-  i.raw_value_ = -raw_value_;
-  return i;
-}
-
 FInt FInt::operator++() {
   raw_value_ += (1 << kShift);
   return *this;
@@ -148,18 +112,6 @@ void FInt::operator*=(const int32_t v) {
 
 void FInt::operator/=(const int32_t v) {
   raw_value_ /= v;
-}
-
-FInt FInt::operator*(const int32_t v) const {
-  FInt i;
-  i.raw_value_ = raw_value_ * v;
-  return i;
-}
-
-FInt FInt::operator/(const int32_t v) const {
-  FInt i;
-  i.raw_value_ = raw_value_ / v;
-  return i;
 }
 
 bool FInt::operator!=(const FInt& o) const {

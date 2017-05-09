@@ -1,6 +1,7 @@
 #ifndef DUX_FIXED_SRC_FIXED_INT_H_
 #define DUX_FIXED_SRC_FIXED_INT_H_
 
+#include <cassert>
 #include <cstdint>
 
 namespace dux {
@@ -67,12 +68,25 @@ class FInt {
   // Asserts if |this| is less than zero.
   FInt Sqrt() const;
 
-  FInt operator+(const FInt&) const;
-  FInt operator-(const FInt&) const;
-  FInt operator*(const FInt&)const;
-  FInt operator/(const FInt&) const;
-  FInt operator%(const FInt&) const;
-  FInt operator-() const;
+  constexpr FInt operator+(const FInt& o) const {
+    return FInt::FromRawValue(raw_value_ + o.raw_value_);
+  }
+  constexpr FInt operator-(const FInt& o) const {
+    return FInt::FromRawValue(raw_value_ - o.raw_value_);
+  }
+  constexpr FInt operator*(const FInt& o) const {
+    return FInt::FromRawValue((raw_value_ * o.raw_value_) >> kShift);
+  }
+  constexpr FInt operator/(const FInt& o) const {
+    return FInt::FromRawValue((raw_value_ << kShift) / o.raw_value_);
+  }
+  constexpr FInt operator%(const FInt& o) const {
+    assert(o.raw_value_ != 0);
+    return dux::FInt::FromRawValue(raw_value_ % o.raw_value_);
+  }
+  constexpr FInt operator-() const {
+    return dux::FInt::FromRawValue(-raw_value_);
+  }
 
   FInt operator++();
   FInt operator--();
@@ -92,8 +106,12 @@ class FInt {
   bool operator>(const FInt&) const;
   bool operator>=(const FInt&) const;
 
-  FInt operator*(const int32_t) const;
-  FInt operator/(const int32_t) const;
+  constexpr FInt operator*(const int32_t v) const {
+    return dux::FInt::FromRawValue(raw_value_ * v);
+  }
+  constexpr FInt operator/(const int32_t v) const {
+    return dux::FInt::FromRawValue(raw_value_ / v);
+  }
   void operator*=(const int32_t);
   void operator/=(const int32_t);
 

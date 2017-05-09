@@ -63,12 +63,15 @@ void FVec2::Init(FInt x, FInt y) {
 }
 
 FVec2 FVec2::FromAngle(FInt angle, FInt radius) {
-  FVec2 v(dux::trig::Cos(angle) * radius, dux::trig::Sin(angle) * radius);
+  FVec2 v;
+  dux::trig::Sincos(angle, v.y_, v.x_);
+  v *= radius;
   return v;
 }
 
 FVec2 FVec2::FromAngle(FInt angle) {
-  FVec2 v(dux::trig::Cos(angle), dux::trig::Sin(angle));
+  FVec2 v;
+  dux::trig::Sincos(angle, v.y_, v.x_);
   return v;
 }
 

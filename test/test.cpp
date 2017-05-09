@@ -1,20 +1,14 @@
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
-#include <math.h>
+#include <cmath>
 
 #include "dux_fixed.h"
+#include "utils.h"
+#include "test_trig.h"
 
 using namespace dux;
-
-namespace {
-
-void AssertNearlyEqual(FInt actual, double expected) {
-  double delta = fabs(expected - actual.DoubleValue());
-  assert(delta < 0.02);
-}
-  
-}  // namespace
+using namespace dux_test_utils;
 
 void TestFixedInt() {
   // Test |Int32|.
@@ -92,30 +86,6 @@ void TestFixedInt() {
   assert(a == FInt(42 * 3));
   a /= FInt(3);
   assert(a == FInt(42));
-}
-
-void TestTrig() {
-  // Test sin, cos.
-  AssertNearlyEqual(dux::trig::Cos(FInt(0)), 1);
-  AssertNearlyEqual(dux::trig::Sin(FInt(0)), 0);
-  AssertNearlyEqual(dux::trig::Cos(FInt(1)), cos(1));
-  AssertNearlyEqual(dux::trig::Sin(FInt(1)), sin(1));
-  AssertNearlyEqual(dux::trig::Cos(FInt(-1)), cos(-1));
-  AssertNearlyEqual(dux::trig::Sin(FInt(-1)), sin(-1));
-  
-  // Test atan2.
-  AssertNearlyEqual(dux::trig::Atan2(FInt(1), FInt(1)), atan2(1,1));
-  AssertNearlyEqual(dux::trig::Atan2(FInt(-1), FInt(1)), atan2(-1,1));
-  AssertNearlyEqual(dux::trig::Atan2(FInt(-1), FInt(-1)), atan2(-1,-1));
-  AssertNearlyEqual(dux::trig::Atan2(FInt(1), FInt(-1)), atan2(1,-1));
-
-  // Test ToRadian.
-  AssertNearlyEqual(dux::trig::ToRadian(FInt(0)), 0);
-  AssertNearlyEqual(dux::trig::ToRadian(FInt(360)), 0);
-  AssertNearlyEqual(dux::trig::ToRadian(FInt(720)), 0);
-  AssertNearlyEqual(dux::trig::ToRadian(FInt(-720)), 0);
-  AssertNearlyEqual(dux::trig::ToRadian(FInt(180)), 3.141);
-  AssertNearlyEqual(dux::trig::ToRadian(FInt(-180)), -3.141);
 }
 
 void TestVec2() {

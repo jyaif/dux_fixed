@@ -6,4 +6,13 @@ include_directories("src")
 
 set(CMAKE_CXX_FLAGS "-std=c++14")
 
-add_executable(dux_fixed_test_bin src/fixed_int.cpp src/fixed_trig.cpp src/fixed_vec2.cpp src/fixed_vec3.cpp test/test.cpp)
+add_executable(
+	dux_fixed_test_bin
+	test/test.cpp
+	test/test_trig.cpp
+	test/utils.cpp
+	src/fixed_int.cpp
+	src/fixed_trig.cpp
+	src/fixed_vec2.cpp
+	src/fixed_vec3.cpp
+)
