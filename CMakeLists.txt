@@ -9,6 +9,8 @@ set(CMAKE_CXX_FLAGS "-std=c++14")
 add_executable(
 	dux_fixed_test_bin
 	test/test.cpp
+	test/test_fint.cpp
+	test/test_fvec2.cpp
 	test/test_trig.cpp
 	test/utils.cpp
 	src/fixed_int.cpp

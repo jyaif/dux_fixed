@@ -1,3 +1,5 @@
+#include "test_trig.h"
+
 #include <cassert>
 #include <cstdio>
 #include <cstdlib>
@@ -11,7 +13,7 @@ using namespace dux::trig;
 using namespace dux_test_utils;
 
 void TestTrig() {
-  // Test sin, cos.
+  // Test |Sin|, |Cos|, |Sincos|.
   for (double a = -10; a < 10; a += 0.001) {
     dux::FInt angle = dux::FInt::FromDouble(a);
     double expectedCos = cos(angle.DoubleValue());
@@ -25,13 +27,26 @@ void TestTrig() {
     AssertNearlyEqual(expectedSin, sin);
   }
 
-  // Test atan2.
-  AssertNearlyEqual(atan2(1,1), dux::trig::Atan2(FInt(1), FInt(1)));
-  AssertNearlyEqual(atan2(-1,1), dux::trig::Atan2(FInt(-1), FInt(1)));
-  AssertNearlyEqual(atan2(-1,-1), dux::trig::Atan2(FInt(-1), FInt(-1)));
-  AssertNearlyEqual(atan2(1,-1), dux::trig::Atan2(FInt(1), FInt(-1)));
+  // Test |Atan2|.
+  for (double x = -10; x < 10; x += 1) {
+    for (double y = -10; y < 10; y += 1) {
+      // TODO: better handle results for y == 0
+      if (y != 0) {
+        FInt fixed_atan2_result = dux::trig::Atan2(FInt::FromDouble(y), FInt::FromDouble(x));
+        double atan2_result = atan2(y,x);
 
-  // Test ToRadian.
+        fixed_atan2_result += dux::FInt::kTwoPi;
+        atan2_result += 2 * M_PI;
+
+        fixed_atan2_result %= dux::FInt::kTwoPi;
+        atan2_result = fmod(atan2_result, 2 * M_PI);
+
+        AssertNearlyEqual(atan2_result, fixed_atan2_result);
+      }
+    }
+  }
+
+  // Test |ToRadian|.
   for (int i = -1000; i < 3000; i++) {
     dux::FInt angle = (dux::FInt::kHalfPi * i) / 512;
     AssertNearlyEqual(angle.DoubleValue() * M_PI / 180, dux::trig::ToRadian(angle));

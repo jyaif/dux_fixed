@@ -3,12 +3,15 @@
 
 #include <cassert>
 #include <cstdint>
+#include <cstdlib>
 
 namespace dux {
 
 // Class encapsulating 52-12 fixed point numbers.
 class FInt {
  public:
+  using RawType = int64_t;
+
   // Initializes to 0.
   constexpr FInt() : raw_value_(0) {
     static_assert(kHalfShift * 2 == kShift, "");
@@ -24,10 +27,8 @@ class FInt {
   constexpr FInt(FInt const& o) : raw_value_(o.raw_value_){};
 
   // Creates a fixed point number from the underlying representation.
-  constexpr static FInt FromRawValue(int64_t value) {
-    FInt i;
-    i.raw_value_ = value;
-    return i;
+  constexpr static FInt FromRawValue(int64_t raw_value) {
+    return FInt(raw_value);
   };
 
   // Creates a fixed point number from the result of the operation
@@ -44,13 +45,15 @@ class FInt {
   }
 
   // Returns the integral part of the fixed point number.
-  int32_t Int32() const;
+  constexpr int32_t Int32() const {
+    return static_cast<int32_t>(raw_value_ >> kShift);
+  }
 
   // Returns an approximation as a double of the fixed point number.
   double DoubleValue() const;
 
   // Returns the absolute value of |this| object.
-  FInt Abs() const;
+  FInt Abs() const { return FInt::FromRawValue(llabs(raw_value_)); }
 
   // Return the largest integral fixed point number less than or equal to |this|
   // object.
@@ -88,23 +91,51 @@ class FInt {
     return dux::FInt::FromRawValue(-raw_value_);
   }
 
-  FInt operator++();
-  FInt operator--();
+  FInt operator++() {
+    raw_value_ += (1 << kShift);
+    return *this;
+  }
+  FInt operator--() {
+    raw_value_ -= (1 << kShift);
+    return *this;
+  }
 
-  void operator+=(const FInt&);
-  void operator-=(const FInt&);
-  void operator*=(const FInt&);
-  void operator/=(const FInt&);
-  void operator%=(const FInt&);
-  void operator>>=(int shift);
-  void operator<<=(int shift);
+  void operator+=(const FInt& o) { raw_value_ += o.raw_value_; }
+  void operator-=(const FInt& o) { raw_value_ -= o.raw_value_; }
+  void operator*=(const FInt& o) {
+    raw_value_ *= o.raw_value_;
+    raw_value_ >>= kShift;
+  }
+  void operator/=(const FInt& o) {
+    raw_value_ <<= kShift;
+    assert(o.raw_value_ > 0);
+    raw_value_ /= o.raw_value_;
+  }
+  void operator%=(const FInt& o) {
+    assert(o.raw_value_ > 0);
+    raw_value_ %= o.raw_value_;
+  }
+  void operator>>=(int shift) { raw_value_ >>= shift; }
+  void operator<<=(int shift) { raw_value_ <<= shift; }
 
-  bool operator!=(const FInt&) const;
-  bool operator==(const FInt&) const;
-  bool operator<(const FInt&) const;
-  bool operator<=(const FInt&) const;
-  bool operator>(const FInt&) const;
-  bool operator>=(const FInt&) const;
+  constexpr bool operator!=(const FInt& o) const {
+    return raw_value_ != o.raw_value_;
+  }
+  constexpr bool operator==(const FInt& o) const {
+    return raw_value_ == o.raw_value_;
+  }
+  constexpr bool operator<(const FInt& o) const {
+    return raw_value_ < o.raw_value_;
+  }
+  constexpr bool operator<=(const FInt& o) const {
+    return raw_value_ <= o.raw_value_;
+  }
+  constexpr bool operator>(const FInt& o) const {
+    return raw_value_ > o.raw_value_;
+  }
+  constexpr bool operator>=(const FInt& o) const {
+    return raw_value_ >= o.raw_value_;
+  }
 
   constexpr FInt operator*(const int32_t v) const {
     return dux::FInt::FromRawValue(raw_value_ * v);
@@ -112,10 +143,9 @@ class FInt {
   constexpr FInt operator/(const int32_t v) const {
     return dux::FInt::FromRawValue(raw_value_ / v);
   }
-  void operator*=(const int32_t);
-  void operator/=(const int32_t);
+  void operator*=(const int32_t v) { raw_value_ *= v; }
+  void operator/=(const int32_t v) { raw_value_ /= v; }
 
-  using RawType = int64_t;
   RawType raw_value_;
   static const int kShift = 12;
   static const RawType kFractionMask = (1 << kShift) - 1;
@@ -129,6 +159,9 @@ class FInt {
   static const FInt kQuarterPi;
   static const FInt kPi;
   static const FInt kTwoPi;
+
+ private:
+  constexpr explicit FInt(int64_t raw_value) : raw_value_(raw_value){};
 };
 
 }  // namespace dux
