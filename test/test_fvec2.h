@@ -1,0 +1,6 @@
+#ifndef DUX_FILED_TEST_TEST_FVEC2_H_
+#define DUX_FILED_TEST_TEST_FVEC2_H_
+
+void TestFVec2();
+
+#endif  // DUX_FILED_TEST_TEST_FVEC2_H_
