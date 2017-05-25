@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdint>
 #include <cstdlib>
+#include <type_traits>
 
 namespace dux {
 
@@ -137,14 +138,30 @@ class FInt {
     return raw_value_ >= o.raw_value_;
   }
 
-  constexpr FInt operator*(const int32_t v) const {
+
+  template<typename T>
+  constexpr FInt operator*(const T v) const {
+    static_assert(std::is_integral<T>::value, "Integer required.");
     return dux::FInt::FromRawValue(raw_value_ * v);
   }
-  constexpr FInt operator/(const int32_t v) const {
+
+  template<typename T>
+  constexpr FInt operator/(const T v) const {
+    static_assert(std::is_integral<T>::value, "Integer required.");
     return dux::FInt::FromRawValue(raw_value_ / v);
   }
-  void operator*=(const int32_t v) { raw_value_ *= v; }
-  void operator/=(const int32_t v) { raw_value_ /= v; }
+
+  template<typename T>
+  void operator*=(const T v) {
+    static_assert(std::is_integral<T>::value, "Integer required.");
+    raw_value_ *= v;
+  }
+
+  template<typename T>
+  void operator/=(const T v) {
+    static_assert(std::is_integral<T>::value, "Integer required.");
+    raw_value_ /= v;
+  }
 
   RawType raw_value_;
   static const int kShift = 12;
@@ -161,6 +178,7 @@ class FInt {
   static const FInt kTwoPi;
 
  private:
+  // Private. Use |FromRawValue| instead.
   constexpr explicit FInt(int64_t raw_value) : raw_value_(raw_value){};
 };
 

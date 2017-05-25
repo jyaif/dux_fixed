@@ -83,7 +83,21 @@ void TestFInt() {
   assert(FInt(4) * FInt(2) == FInt(8));
   assert(FInt(-100) * FInt(-2) == FInt(200));
   assert(FInt(40) / FInt(2) == FInt(20));
+  int32_t int32_t_val = 2;
+  uint32_t uint32_t_val = 2;
+  int64_t int64_t_val = 2;
+  uint64_t uint64_t_val = 2;
+  assert(FInt(40) * int32_t_val == FInt(80));
+  assert(FInt(40) / int32_t_val == FInt(20));
+  assert(FInt(40) * uint32_t_val == FInt(80));
+  assert(FInt(40) / uint32_t_val == FInt(20));
+  assert(FInt(40) * int64_t_val == FInt(80));
+  assert(FInt(40) / int64_t_val == FInt(20));
+  assert(FInt(40) * uint64_t_val == FInt(80));
+  assert(FInt(40) / uint64_t_val == FInt(20));
+
   
+
   // Test +=, -=, *=, and /= operators.
   FInt a(43);
   a += FInt(1);
