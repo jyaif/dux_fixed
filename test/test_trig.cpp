@@ -1,9 +1,9 @@
 #include "test_trig.h"
 
 #include <cassert>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
-#include <cmath>
 
 #include "dux_fixed.h"
 #include "utils.h"
@@ -32,8 +32,9 @@ void TestTrig() {
     for (double y = -10; y < 10; y += 1) {
       // TODO: better handle results for y == 0
       if (y != 0) {
-        FInt fixed_atan2_result = dux::trig::Atan2(FInt::FromDouble(y), FInt::FromDouble(x));
-        double atan2_result = atan2(y,x);
+        FInt fixed_atan2_result =
+            dux::trig::Atan2(FInt::FromDouble(y), FInt::FromDouble(x));
+        double atan2_result = atan2(y, x);
 
         fixed_atan2_result += dux::FInt::kTwoPi;
         atan2_result += 2 * M_PI;
@@ -49,6 +50,7 @@ void TestTrig() {
   // Test |ToRadian|.
   for (int i = -1000; i < 3000; i++) {
     dux::FInt angle = (dux::FInt::kHalfPi * i) / 512;
-    AssertNearlyEqual(angle.DoubleValue() * M_PI / 180, dux::trig::ToRadian(angle));
+    AssertNearlyEqual(angle.DoubleValue() * M_PI / 180,
+                      dux::trig::ToRadian(angle));
   }
 }

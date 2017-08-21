@@ -12,8 +12,8 @@ void AssertNearlyEqual(double expected, dux::FInt actual) {
     threshold = expected * 0.002;
   }
   if (delta >= threshold) {
-  	printf("expected:%f, actual:%f\n", expected, actual.DoubleValue());
-  	assert(false);
+    printf("expected:%f, actual:%f\n", expected, actual.DoubleValue());
+    assert(false);
   }
 }
 

@@ -18,19 +18,25 @@ class FInt {
     static_assert(kHalfShift * 2 == kShift, "");
     static_assert(kFractionMask == (1 << kShift) - 1, "");
     static_assert(kFractionMask == ~kIntegerMask, "");
-  };
+  }
 
   // Sets the integral part of the fixed point number to |value|.
   constexpr explicit FInt(int32_t value)
-      : raw_value_(((RawType)value) << kShift){};
+      : raw_value_(static_cast<RawType>(value) << kShift) {}
 
   // Copy constructor.
-  constexpr FInt(FInt const& o) : raw_value_(o.raw_value_){};
+  constexpr FInt(FInt const& o) : raw_value_(o.raw_value_) {}
+
+  // Copy assignment operator.
+  constexpr FInt& operator=(FInt const& o) {
+    raw_value_ = o.raw_value_;
+    return *this;
+  }
 
   // Creates a fixed point number from the underlying representation.
   constexpr static FInt FromRawValue(int64_t raw_value) {
     return FInt(raw_value);
-  };
+  }
 
   // Creates a fixed point number from the result of the operation
   // numerator/denominator.
@@ -42,7 +48,8 @@ class FInt {
 
   // Creates a fixed point number from a double.
   constexpr static FInt FromDouble(double value) {
-    return FInt::FromFraction(value * (1 << FInt::kShift), (1 << FInt::kShift));
+    return FInt::FromFraction(static_cast<int32_t>(value * (1 << FInt::kShift)),
+                              (1 << FInt::kShift));
   }
 
   // Returns the integral part of the fixed point number.
@@ -138,26 +145,25 @@ class FInt {
     return raw_value_ >= o.raw_value_;
   }
 
-
-  template<typename T>
+  template <typename T>
   constexpr FInt operator*(const T v) const {
     static_assert(std::is_integral<T>::value, "Integer required.");
-    return dux::FInt::FromRawValue(raw_value_ * v);
+    return dux::FInt::FromRawValue(raw_value_ * static_cast<RawType>(v));
   }
 
-  template<typename T>
+  template <typename T>
   constexpr FInt operator/(const T v) const {
     static_assert(std::is_integral<T>::value, "Integer required.");
-    return dux::FInt::FromRawValue(raw_value_ / v);
+    return dux::FInt::FromRawValue(raw_value_ / static_cast<RawType>(v));
   }
 
-  template<typename T>
+  template <typename T>
   void operator*=(const T v) {
     static_assert(std::is_integral<T>::value, "Integer required.");
     raw_value_ *= v;
   }
 
-  template<typename T>
+  template <typename T>
   void operator/=(const T v) {
     static_assert(std::is_integral<T>::value, "Integer required.");
     raw_value_ /= v;
@@ -179,7 +185,7 @@ class FInt {
 
  private:
   // Private. Use |FromRawValue| instead.
-  constexpr explicit FInt(int64_t raw_value) : raw_value_(raw_value){};
+  constexpr explicit FInt(int64_t raw_value) : raw_value_(raw_value) {}
 };
 
 }  // namespace dux

@@ -1,13 +1,15 @@
 #include <cassert>
+#include <cmath>
 #include <cstdio>
 #include <cstdlib>
-#include <cmath>
 
 #include "test_fint.h"
 #include "test_fvec2.h"
 #include "test_trig.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
+  (void)argc;
+  (void)argv;
   TestFInt();
   TestFVec2();
   TestTrig();

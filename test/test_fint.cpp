@@ -10,20 +10,20 @@ using namespace dux::trig;
 using namespace dux_test_utils;
 
 void TestFInt() {
-// Test |Int32|.
+  // Test |Int32|.
   assert(FInt(4).Int32() == 4);
   assert(FInt(-4).Int32() == -4);
-  
+
   // Test |DoubleValue|.
   assert(FInt::FromFraction(1, 3).DoubleValue() > 0.333);
   assert(FInt::FromFraction(1, 3).DoubleValue() < 0.334);
-  
+
   // Test |Abs|.
   assert(FInt(0).Abs() == FInt(0));
   assert(FInt(1).Abs() == FInt(1));
   assert(FInt(-1).Abs() == FInt(1));
   assert(FInt(-15345432).Abs() == FInt(15345432));
-  
+
   // Test |Floor|.
   assert(FInt(0).Floor() == FInt(0));
   // Positive values.
@@ -37,7 +37,7 @@ void TestFInt() {
   assert(FInt::FromDouble(-1.1).Floor() == FInt(-2));
   assert(FInt::FromDouble(-1.9).Floor() == FInt(-2));
   assert(FInt::FromDouble(-1000.001).Floor() == FInt(-1001));
-  
+
   // Test |Ceil|.
   assert(FInt(0).Ceil() == FInt(0));
   // Positive values.
@@ -48,7 +48,7 @@ void TestFInt() {
   assert(FInt(-1).Ceil() == FInt(-1));
   assert(FInt::FromDouble(-1.1).Ceil() == FInt(-1));
   assert(FInt::FromDouble(-1.9).Ceil() == FInt(-1));
-  
+
   // Test |Round|.
   assert(FInt(0).Round() == FInt(0));
   // Positive values.
@@ -61,24 +61,27 @@ void TestFInt() {
   assert(FInt::FromDouble(-0.55).Round() == FInt(-1));
   assert(FInt::FromDouble(-10.45).Round() == FInt(-10));
   assert(FInt::FromDouble(-10.55).Round() == FInt(-11));
-  
+
   // Test |Sqrt|.
   assert(FInt(144).Sqrt() == FInt(12));
   // Test values in the int32 range.
   for (int32_t i = 0; i <= 0x7fff; i++) {
-  	AssertNearlyEqual(sqrtf(i), FInt(i).Sqrt());
+    AssertNearlyEqual(static_cast<double>(sqrtf(i)), FInt(i).Sqrt());
   }
   // Test large values.
-   for (int64_t i = 797003437; i < FInt::kMax.raw_value_ - (2LL<<50); i += 1LL<<50) {
-   	FInt v = FInt::FromRawValue(i);
-  	AssertNearlyEqual(sqrtf(v.DoubleValue()), v.Sqrt());
+  for (int64_t i = 797003437; i < FInt::kMax.raw_value_ - (2LL << 50);
+       i += 1LL << 50) {
+    FInt v = FInt::FromRawValue(i);
+    AssertNearlyEqual(
+        static_cast<double>(sqrtf(static_cast<float>(v.DoubleValue()))),
+        v.Sqrt());
   }
-  
+
   // Test ==, !=, < operators.
   assert(FInt(434) == FInt(434));
   assert(FInt(-1) != FInt(1));
   assert(FInt(312) < FInt(1432));
-  
+
   // Test +, -, *, and / operators.
   assert(FInt(4) * FInt(2) == FInt(8));
   assert(FInt(-100) * FInt(-2) == FInt(200));
@@ -95,8 +98,6 @@ void TestFInt() {
   assert(FInt(40) / int64_t_val == FInt(20));
   assert(FInt(40) * uint64_t_val == FInt(80));
   assert(FInt(40) / uint64_t_val == FInt(20));
-
-  
 
   // Test +=, -=, *=, and /= operators.
   FInt a(43);
