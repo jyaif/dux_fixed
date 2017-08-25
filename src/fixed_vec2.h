@@ -26,7 +26,7 @@ class FVec2 {
   FInt Length();
   void Normalize(bool& success);
   void Normalize(bool& success, FInt newLength);
-  FInt CrossProduct(const FVec2& v) const;
+  FInt DotProduct(const FVec2& v) const;
   FInt Angle();
   void Rotate90Deg();
 

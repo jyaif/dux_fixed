@@ -14,6 +14,15 @@ void TestFVec2() {
   assert(dux::FVec2(10, 10).SquareLength() == dux::FInt(200));
   assert(dux::FVec2(3, 4).Length() == dux::FInt(5));
 
+  // Test |DotProduct|.
+  assert(dux::FVec2(0, 0).DotProduct(dux::FVec2(0, 0)) == dux::FInt(0));
+  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(0, 0)) == dux::FInt(0));
+  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(0, 10)) == dux::FInt(0));
+  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, -10)) == dux::FInt(0));
+  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(10, 0)) == dux::FInt(100));
+  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, 0)) == dux::FInt(100));
+  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, 10)) == dux::FInt(200));
+
   // Test |Normalize|.
   bool normalized = true;
   dux::FVec2(0, 0).Normalize(normalized);

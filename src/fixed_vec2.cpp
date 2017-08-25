@@ -48,8 +48,8 @@ void FVec2::Normalize(bool& success, FInt newLength) {
   }
 }
 
-FInt FVec2::CrossProduct(const FVec2& v) const {
-  return (x_ * v.y_) - (y_ * v.x_);
+FInt FVec2::DotProduct(const FVec2& v) const {
+  return (x_ * v.x_) + (y_ * v.y_);
 }
 
 void FVec2::Rotate90Deg() {
