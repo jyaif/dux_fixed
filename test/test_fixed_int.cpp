@@ -1,4 +1,4 @@
-#include "test_fint.h"
+#include "test_fixed_int.h"
 
 #include <cmath>
 

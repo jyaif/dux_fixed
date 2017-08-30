@@ -3,9 +3,9 @@
 #include <array>
 #include <cassert>
 #include <cmath>
-#include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include <iostream>
 
 namespace {
 
@@ -260,19 +260,19 @@ void GenerateLookupTables() {
         FInt::FromDouble(static_cast<double>(std::tan(angle / 4))));
   }
 
-  printf("// Precomputed cos values between 0 and PI/2.\n");
-  printf("std::array<int16_t, 513> kCosTable = {\n");
+  std::cout << "// Precomputed cos values between 0 and PI/2.\n";
+  std::cout << "std::array<int16_t, 513> kCosTable = {\n";
   for (FInt& v : cosTable) {
-    printf("%lli,\n", v.raw_value_);
+    std::cout << v.raw_value_ << ",\n";
   }
-  printf("};\n");
+  std::cout << "};\n";
 
-  printf("// Precomputed tan values between 0 and 2*PI.\n");
-  printf("std::array<int32_t, 512> kTanTable = {\n");
+  std::cout << "// Precomputed tan values between 0 and 2*PI.\n";
+  std::cout << "std::array<int32_t, 512> kTanTable = {\n";
   for (FInt& v : tanTable) {
-    printf("%lli,\n", v.raw_value_);
+    std::cout << v.raw_value_ << ",\n";
   }
-  printf("};\n");
+  std::cout << "};\n";
 }
 
 }  // namespace trig

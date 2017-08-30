@@ -1,4 +1,4 @@
-#include "test_trig.h"
+#include "test_fixed_trig.h"
 
 #include <cassert>
 #include <cmath>

@@ -9,11 +9,13 @@ set(CMAKE_CXX_FLAGS "-std=c++14 -Werror")
 add_executable(
 	dux_fixed_test_bin
 	test/test.cpp
-	test/test_fint.cpp
-	test/test_fvec2.cpp
-	test/test_trig.cpp
+	test/test_fixed_int.cpp
+	test/test_fixed_rand.cpp
+	test/test_fixed_vec2.cpp
+	test/test_fixed_trig.cpp
 	test/utils.cpp
 	src/fixed_int.cpp
+	src/fixed_rand.cpp
 	src/fixed_trig.cpp
 	src/fixed_vec2.cpp
 	src/fixed_vec3.cpp

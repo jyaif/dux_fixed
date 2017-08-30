@@ -1,4 +1,4 @@
-#include "test_fvec2.h"
+#include "test_fixed_vec2.h"
 
 #include <cmath>
 
