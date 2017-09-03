@@ -7,19 +7,24 @@
 using namespace dux;
 
 void TestFRandGenerator() {
-	FRandGenerator rg(42);
+  FRandGenerator rg(42);
 
-	// Tests that the same sequence is always produced, even with different compilers/libraries.
-	for (int i = 0; i < 5000; i++) {
-		rg.RandInt();
-	}
-	assert(rg.RandInt() == -740800590);
+  // Tests that the same sequence is always produced, even with different
+  // compilers/libraries.
+  // Also test that copy works.
+  for (int i = 0; i < 5000; i++) {
+    rg.RandInt();
+  }
 
+  FRandGenerator rg2 = rg;
+  assert(rg.RandInt() == -740800590);
+  assert(rg2.RandInt() == -740800590);
+  printf("%i", (int)sizeof(rg2));
 
-	// Tests that the clamping works.
-	for (int i = 0; i < 100; i++) {
-		dux::FInt v = rg.RandFInt(dux::FInt(1986), dux::FInt(1987));
-		assert(v >= dux::FInt(1986));
-		assert(v <= dux::FInt(1987));
-	}
+  // Tests that the clamping works.
+  for (int i = 0; i < 100; i++) {
+    dux::FInt v = rg.RandFInt(dux::FInt(1986), dux::FInt(1987));
+    assert(v >= dux::FInt(1986));
+    assert(v <= dux::FInt(1987));
+  }
 }

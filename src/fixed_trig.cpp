@@ -4,8 +4,8 @@
 #include <cassert>
 #include <cmath>
 #include <cstdlib>
-#include <vector>
 #include <iostream>
+#include <vector>
 
 namespace {
 
