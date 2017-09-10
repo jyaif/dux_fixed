@@ -19,7 +19,6 @@ void TestFRandGenerator() {
   FRandGenerator rg2 = rg;
   assert(rg.RandInt() == -740800590);
   assert(rg2.RandInt() == -740800590);
-  printf("%i", (int)sizeof(rg2));
 
   // Tests that the clamping works.
   for (int i = 0; i < 100; i++) {

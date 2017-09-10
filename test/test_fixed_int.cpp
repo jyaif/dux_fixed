@@ -109,4 +109,13 @@ void TestFInt() {
   assert(a == FInt(42 * 3));
   a /= FInt(3);
   assert(a == FInt(42));
+
+  // Test constants.
+  assert(FInt::kMax > dux::FInt(10000000));
+  assert(FInt::kMin < dux::FInt(-10000000));
+  assert(FInt::kZero == dux::FInt(0));
+  AssertNearlyEqual(FInt::kQuarterPi.DoubleValue() * 2, FInt::kHalfPi);
+  AssertNearlyEqual(FInt::kHalfPi.DoubleValue() * 2, FInt::kPi);
+  AssertNearlyEqual(FInt::kPi.DoubleValue() * 2, FInt::kTwoPi);
+  AssertNearlyEqual(3.14159, FInt::kPi);
 }
