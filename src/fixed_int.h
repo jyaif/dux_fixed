@@ -60,6 +60,9 @@ class FInt {
   // Returns an approximation as a double of the fixed point number.
   double DoubleValue() const;
 
+  // Returns an approximation as a float of the fixed point number.
+  float FloatValue() const;
+
   // Returns the absolute value of |this| object.
   FInt Abs() const { return FInt::FromRawValue(llabs(raw_value_)); }
 

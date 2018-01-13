@@ -18,6 +18,10 @@ void TestFInt() {
   assert(FInt::FromFraction(1, 3).DoubleValue() > 0.333);
   assert(FInt::FromFraction(1, 3).DoubleValue() < 0.334);
 
+  // Test |FloatValue|.
+  assert(FInt::FromFraction(1, 3).FloatValue() > 0.333);
+  assert(FInt::FromFraction(1, 3).FloatValue() < 0.334);
+
   // Test |Abs|.
   assert(FInt(0).Abs() == FInt(0));
   assert(FInt(1).Abs() == FInt(1));

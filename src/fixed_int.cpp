@@ -18,6 +18,12 @@ double FInt::DoubleValue() const {
   return v;
 }
 
+float FInt::FloatValue() const {
+  float v = raw_value_;
+  v /= (1 << kShift);
+  return v;
+}
+
 FInt FInt::Floor() const {
   return FInt::FromRawValue(raw_value_ & kIntegerMask);
 }
