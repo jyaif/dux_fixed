@@ -22,4 +22,9 @@ uint32_t FRandGenerator::RandInt() {
   return rng_();
 }
 
+int32_t FRandGenerator::RandInt(int32_t min, int32_t max) {
+  std::uniform_int_distribution<int64_t> distribution(min, max);
+  return distribution(rng_);
+}
+
 }  // namespace dux

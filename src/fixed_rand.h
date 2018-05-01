@@ -17,7 +17,7 @@ class FRandGenerator {
                        dux::FInt const minY,
                        dux::FInt const maxY);
   uint32_t RandInt();
-
+  int32_t RandInt(int32_t min, int32_t max);
  private:
   std::mt19937 rng_;
 };
