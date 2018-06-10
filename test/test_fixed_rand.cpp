@@ -26,4 +26,9 @@ void TestFRandGenerator() {
     assert(v >= dux::FInt(1986));
     assert(v <= dux::FInt(1987));
   }
+
+  // Tests that setting the seed works.
+  rg.SetSeed(2019);
+  FRandGenerator rg3(2019);
+  assert(rg.RandInt() == rg3.RandInt());
 }
