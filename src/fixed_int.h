@@ -4,6 +4,7 @@
 #include <cassert>
 #include <cstdint>
 #include <cstdlib>
+#include <sstream>
 #include <type_traits>
 
 namespace dux {
@@ -192,5 +193,7 @@ class FInt {
 };
 
 }  // namespace dux
+
+std::ostream& operator <<(std::ostream& stream, const dux::FInt& fint);
 
 #endif  // DUX_FIXED_SRC_FIXED_INT_H_

@@ -70,3 +70,8 @@ FInt FInt::Sqrt() const {
 }
 
 }  // namespace dux
+
+std::ostream& operator <<(std::ostream& stream, const dux::FInt& fint) {
+  stream << fint.raw_value_;
+  return stream;
+}
