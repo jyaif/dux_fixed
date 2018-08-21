@@ -31,4 +31,15 @@ void TestFRandGenerator() {
   rg.SetSeed(2019);
   FRandGenerator rg3(2019);
   assert(rg.RandInt() == rg3.RandInt());
+
+  // Tests that float rand works.
+  for (int i = 0; i < 1000; i++) {
+    float v = rg.RandFloat(10);
+    assert(v >= 0);
+    assert(v <= 10);
+  }
+  while (rg.RandFloat(10) < 9.999) {
+  }
+  while (rg.RandFloat(10) > 0.001) {
+  }
 }

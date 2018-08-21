@@ -31,4 +31,8 @@ int32_t FRandGenerator::RandInt(int32_t min, int32_t max) {
   return distribution(rng_);
 }
 
+float FRandGenerator::RandFloat(float max) {
+  return std::generate_canonical<double, 12>(rng_) * max;
+}
+
 }  // namespace dux
