@@ -42,6 +42,7 @@ class FInt {
   // Creates a fixed point number from the result of the operation
   // numerator/denominator.
   constexpr static FInt FromFraction(int32_t numerator, int32_t denominator) {
+    assert(denominator != 0);
     FInt i(numerator);
     i.raw_value_ /= denominator;
     return i;
