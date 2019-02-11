@@ -24,23 +24,6 @@ float FInt::FloatValue() const {
   return v;
 }
 
-FInt FInt::Floor() const {
-  return FInt::FromRawValue(raw_value_ & kIntegerMask);
-}
-
-FInt FInt::Ceil() const {
-  return -FInt::FromRawValue(-raw_value_ & kIntegerMask);
-}
-
-FInt FInt::Round() const {
-  bool high_bit_of_fraction_is_one = (raw_value_ & kHighBitOfFraction) > 0;
-  if (high_bit_of_fraction_is_one) {
-    return Ceil();
-  } else {
-    return Floor();
-  }
-}
-
 FInt FInt::Sqrt() const {
   assert(raw_value_ >= 0);
   if (raw_value_ <= 0)
@@ -56,7 +39,7 @@ FInt FInt::Sqrt() const {
       n1 = (n + (value / n)) >> 1;
     }
     RawType square_root_of_raw_value = n1;
-    return FInt(square_root_of_raw_value << kHalfShift);
+    return FInt::FromRawValue(square_root_of_raw_value << kHalfShift);
   } else {
     RawType n = (raw_value_ >> 1) + 1;
     RawType n1 = (n + (raw_value_ / n)) >> 1;
@@ -71,7 +54,7 @@ FInt FInt::Sqrt() const {
 
 }  // namespace dux
 
-std::ostream& operator <<(std::ostream& stream, const dux::FInt& fint) {
+std::ostream& operator<<(std::ostream& stream, const dux::FInt& fint) {
   stream << fint.raw_value_;
   return stream;
 }

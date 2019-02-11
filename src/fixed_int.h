@@ -35,7 +35,7 @@ class FInt {
   }
 
   // Creates a fixed point number from the underlying representation.
-  constexpr static FInt FromRawValue(int64_t raw_value) {
+  constexpr static FInt FromRawValue(RawType raw_value) {
     return FInt(raw_value);
   }
 
@@ -66,19 +66,41 @@ class FInt {
   float FloatValue() const;
 
   // Returns the absolute value of |this| object.
-  FInt Abs() const { return FInt::FromRawValue(llabs(raw_value_)); }
+  constexpr FInt Abs() const {
+    if (raw_value_ > 0) {
+      return FInt::FromRawValue(raw_value_);
+    }
+    return FInt::FromRawValue(-raw_value_);
+  }
 
   // Return the largest integral fixed point number less than or equal to |this|
   // object.
-  FInt Floor() const;
+  constexpr FInt Floor() const {
+    return FInt::FromRawValue(raw_value_ & kIntegerMask);
+  }
 
   // Return the smallest integral fixed point number greater than or equal to
   // |this| object.
-  FInt Ceil() const;
+  constexpr FInt Ceil() const {
+    return -FInt::FromRawValue(-raw_value_ & kIntegerMask);
+  }
 
   // Returns the integral value nearest by rounding half-way cases away from
   // zero.
-  FInt Round() const;
+  constexpr FInt Round() const {
+    bool high_bit_of_fraction_is_one = (raw_value_ & kHighBitOfFraction) > 0;
+    if (high_bit_of_fraction_is_one) {
+      return Ceil();
+    } else {
+      return Floor();
+    }
+  }
+
+  // Returns whether |other| is of the same sign as |this|.
+  // Considers 0 as being a positive number.
+  constexpr bool IsSameSignAs(const FInt& other) const {
+    return (raw_value_ ^ other.raw_value_) >= 0;
+  }
 
   // Returns the non-negative square root of |this| object.
   // Asserts if |this| is less than zero.
@@ -104,32 +126,32 @@ class FInt {
     return dux::FInt::FromRawValue(-raw_value_);
   }
 
-  FInt operator++() {
+  constexpr FInt operator++() {
     raw_value_ += (1 << kShift);
     return *this;
   }
-  FInt operator--() {
+  constexpr FInt operator--() {
     raw_value_ -= (1 << kShift);
     return *this;
   }
 
-  void operator+=(const FInt& o) { raw_value_ += o.raw_value_; }
-  void operator-=(const FInt& o) { raw_value_ -= o.raw_value_; }
-  void operator*=(const FInt& o) {
+  constexpr void operator+=(const FInt& o) { raw_value_ += o.raw_value_; }
+  constexpr void operator-=(const FInt& o) { raw_value_ -= o.raw_value_; }
+  constexpr void operator*=(const FInt& o) {
     raw_value_ *= o.raw_value_;
     raw_value_ >>= kShift;
   }
-  void operator/=(const FInt& o) {
+  constexpr void operator/=(const FInt& o) {
     raw_value_ <<= kShift;
     assert(o.raw_value_ > 0);
     raw_value_ /= o.raw_value_;
   }
-  void operator%=(const FInt& o) {
+  constexpr void operator%=(const FInt& o) {
     assert(o.raw_value_ > 0);
     raw_value_ %= o.raw_value_;
   }
-  void operator>>=(int shift) { raw_value_ >>= shift; }
-  void operator<<=(int shift) { raw_value_ <<= shift; }
+  constexpr void operator>>=(int shift) { raw_value_ >>= shift; }
+  constexpr void operator<<=(int shift) { raw_value_ <<= shift; }
 
   constexpr bool operator!=(const FInt& o) const {
     return raw_value_ != o.raw_value_;
@@ -163,13 +185,13 @@ class FInt {
   }
 
   template <typename T>
-  void operator*=(const T v) {
+  constexpr void operator*=(const T v) {
     static_assert(std::is_integral<T>::value, "Integer required.");
     raw_value_ *= v;
   }
 
   template <typename T>
-  void operator/=(const T v) {
+  constexpr void operator/=(const T v) {
     static_assert(std::is_integral<T>::value, "Integer required.");
     raw_value_ /= v;
   }
@@ -190,11 +212,11 @@ class FInt {
 
  private:
   // Private. Use |FromRawValue| instead.
-  constexpr explicit FInt(int64_t raw_value) : raw_value_(raw_value) {}
+  constexpr explicit FInt(RawType raw_value) : raw_value_(raw_value) {}
 };
 
 }  // namespace dux
 
-std::ostream& operator <<(std::ostream& stream, const dux::FInt& fint);
+std::ostream& operator<<(std::ostream& stream, const dux::FInt& fint);
 
 #endif  // DUX_FIXED_SRC_FIXED_INT_H_

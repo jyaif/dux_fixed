@@ -22,6 +22,7 @@ class FRandGenerator {
   int32_t RandInt(int32_t min, int32_t max);
   // Returns a number in the range [0, max].
   float RandFloat(float max);
+
  private:
   std::mt19937 rng_;
 };

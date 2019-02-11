@@ -1,5 +1,6 @@
 #include "test_fixed_int.h"
 
+#include <cassert>
 #include <cmath>
 
 #include "dux_fixed.h"
@@ -65,6 +66,17 @@ void TestFInt() {
   assert(FInt::FromDouble(-0.55).Round() == FInt(-1));
   assert(FInt::FromDouble(-10.45).Round() == FInt(-10));
   assert(FInt::FromDouble(-10.55).Round() == FInt(-11));
+
+  // Test same sign.
+  assert(FInt(20).IsSameSignAs(FInt(10)));
+  assert(FInt(20).IsSameSignAs(FInt(0)));
+  assert(FInt(0).IsSameSignAs(FInt(0)));
+  assert(FInt(-20).IsSameSignAs(FInt(-10)));
+  assert(!FInt(-20).IsSameSignAs(FInt(0)));
+  assert(!FInt(-20).IsSameSignAs(FInt(10)));
+  assert(FInt::kMax.IsSameSignAs(dux::FInt(10)));
+  assert(FInt::kMin.IsSameSignAs(dux::FInt(-10)));
+  assert(!FInt::kMin.IsSameSignAs(FInt::kMax));
 
   // Test |Sqrt|.
   assert(FInt(144).Sqrt() == FInt(12));
