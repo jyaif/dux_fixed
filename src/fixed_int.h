@@ -9,6 +9,8 @@
 
 namespace dux {
 
+#define DUX_NO_UB __attribute__((no_sanitize("shift")))
+
 // Class encapsulating 52-12 fixed point numbers.
 class FInt {
  public:
@@ -22,7 +24,7 @@ class FInt {
   }
 
   // Sets the integral part of the fixed point number to |value|.
-  constexpr explicit FInt(int32_t value)
+  constexpr explicit FInt(int32_t value) DUX_NO_UB
       : raw_value_(static_cast<RawType>(value) << kShift) {}
 
   // Copy constructor.
@@ -55,7 +57,7 @@ class FInt {
   }
 
   // Returns the integral part of the fixed point number.
-  constexpr int32_t Int32() const {
+  constexpr int32_t Int32() const DUX_NO_UB {
     return static_cast<int32_t>(raw_value_ >> kShift);
   }
 
@@ -112,10 +114,10 @@ class FInt {
   constexpr FInt operator-(const FInt& o) const {
     return FInt::FromRawValue(raw_value_ - o.raw_value_);
   }
-  constexpr FInt operator*(const FInt& o) const {
+  constexpr FInt operator*(const FInt& o) const DUX_NO_UB {
     return FInt::FromRawValue((raw_value_ * o.raw_value_) >> kShift);
   }
-  constexpr FInt operator/(const FInt& o) const {
+  constexpr FInt operator/(const FInt& o) const DUX_NO_UB {
     return FInt::FromRawValue((raw_value_ << kShift) / o.raw_value_);
   }
   constexpr FInt operator%(const FInt& o) const {
@@ -137,11 +139,11 @@ class FInt {
 
   constexpr void operator+=(const FInt& o) { raw_value_ += o.raw_value_; }
   constexpr void operator-=(const FInt& o) { raw_value_ -= o.raw_value_; }
-  constexpr void operator*=(const FInt& o) {
+  constexpr void operator*=(const FInt& o) DUX_NO_UB {
     raw_value_ *= o.raw_value_;
     raw_value_ >>= kShift;
   }
-  constexpr void operator/=(const FInt& o) {
+  constexpr void operator/=(const FInt& o) DUX_NO_UB {
     raw_value_ <<= kShift;
     assert(o.raw_value_ > 0);
     raw_value_ /= o.raw_value_;
@@ -150,8 +152,8 @@ class FInt {
     assert(o.raw_value_ > 0);
     raw_value_ %= o.raw_value_;
   }
-  constexpr void operator>>=(int shift) { raw_value_ >>= shift; }
-  constexpr void operator<<=(int shift) { raw_value_ <<= shift; }
+  constexpr void operator>>=(int shift) DUX_NO_UB { raw_value_ >>= shift; }
+  constexpr void operator<<=(int shift) DUX_NO_UB { raw_value_ <<= shift; }
 
   constexpr bool operator!=(const FInt& o) const {
     return raw_value_ != o.raw_value_;

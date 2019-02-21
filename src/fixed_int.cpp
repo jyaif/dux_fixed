@@ -12,19 +12,19 @@ const FInt FInt::kQuarterPi = FInt::FromRawValue(3217LL);
 const FInt FInt::kPi = FInt::FromRawValue(12868LL);
 const FInt FInt::kTwoPi = FInt::FromRawValue(25736LL);
 
-double FInt::DoubleValue() const {
+double FInt::DoubleValue() const DUX_NO_UB {
   double v = raw_value_;
   v /= (1 << kShift);
   return v;
 }
 
-float FInt::FloatValue() const {
+float FInt::FloatValue() const DUX_NO_UB {
   float v = raw_value_;
   v /= (1 << kShift);
   return v;
 }
 
-FInt FInt::Sqrt() const {
+FInt FInt::Sqrt() const DUX_NO_UB {
   assert(raw_value_ >= 0);
   if (raw_value_ <= 0)
     return FInt(0);
