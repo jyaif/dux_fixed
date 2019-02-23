@@ -1,6 +1,8 @@
 #include "fixed_vec3.h"
 #include "fixed_trig.h"
 
+#include <array>
+
 namespace dux {
 
 FVec3::FVec3() {}
@@ -130,10 +132,10 @@ bool FVec3::operator!=(const FVec3& other) const {
 }
 
 std::string FVec3::String() const {
-  char buffer[100];
-  snprintf(buffer, 100, "%f %f %f", x_.DoubleValue(), y_.DoubleValue(),
-           z_.DoubleValue());
-  return std::string(buffer);
+  std::array<char, 100> buffer;
+  snprintf(buffer.data(), buffer.size(), "%f %f %f", x_.DoubleValue(),
+           y_.DoubleValue(), z_.DoubleValue());
+  return std::string(buffer.data());
 }
 
 }  // namespace dux

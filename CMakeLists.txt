@@ -4,7 +4,7 @@ project(dux_fixed)
 # for tests:
 include_directories("src")
 
-set(CMAKE_CXX_FLAGS "-std=c++14 -Werror")
+set(CMAKE_CXX_FLAGS "-std=c++17 -Werror")
 
 add_executable(
 	dux_fixed_test_bin

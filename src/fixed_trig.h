@@ -3,9 +3,7 @@
 
 #include "fixed_int.h"
 
-namespace dux {
-
-namespace trig {
+namespace dux::trig {
 
 // Returns the cosinus of the radian angle |angle|.
 FInt Cos(FInt angle);
@@ -27,8 +25,6 @@ constexpr FInt ToRadian(FInt angle) {
 // Generates and prints the lookup tables used in the implementation.
 void GenerateLookupTables();
 
-}  // namespace trig
-
-}  // namespace dux
+}  // namespace dux::trig
 
 #endif  // DUX_FILED_SRC_FIXED_TRIG_H_

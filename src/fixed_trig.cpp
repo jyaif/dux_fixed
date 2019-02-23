@@ -121,10 +121,12 @@ int32_t SearchValueInTanTable(int32_t value) {
   int32_t lowerBound = 0;
   int32_t higherBound = kTanTable.size() - 1;
   assert(value >= 0);
-  if (value <= kTanTable[lowerBound])
+  if (value <= kTanTable[lowerBound]) {
     return lowerBound;
-  if (value >= kTanTable[higherBound])
+  }
+  if (value >= kTanTable[higherBound]) {
     return higherBound;
+  }
   while (higherBound - lowerBound > 1) {
     int32_t index = (higherBound + lowerBound) / 2;
     int32_t valueInTheCenter = kTanTable[index];
@@ -153,9 +155,7 @@ void NormalizeAngle(dux::FInt& angle) {
 
 }  // namespace
 
-namespace dux {
-
-namespace trig {
+namespace dux::trig {
 
 FInt Cos(FInt angle) {
   NormalizeAngle(angle);
@@ -275,6 +275,4 @@ void GenerateLookupTables() {
   std::cout << "};\n";
 }
 
-}  // namespace trig
-
-}  // namespace dux
+}  // namespace dux::trig

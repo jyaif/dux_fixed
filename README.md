@@ -5,7 +5,7 @@
 dux_fixed is a library handling fixed point calculation.
 
 * Only implements 52:12 fixed point values.
-* Uses C++14.
+* Uses C++17.
 * Follows roughly the [Google C++ Style Guide](https://google.github.io/styleguide/cppguide.html).
 * MIT license.
 

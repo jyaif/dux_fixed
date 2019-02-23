@@ -1,11 +1,13 @@
 #include "fixed_vec2.h"
 #include "fixed_trig.h"
 
+#include <array>
+
 namespace dux {
 
 FVec2::FVec2() : x_(0), y_(0) {}
 
-FVec2::FVec2(FVec2 const& v) : x_(v.x_), y_(v.y_) {}
+FVec2::FVec2(FVec2 const& v) = default;
 
 FVec2::FVec2(FInt x, FInt y) : x_(x), y_(y) {}
 
@@ -147,9 +149,10 @@ FInt FVec2::Angle() {
 }
 
 std::string FVec2::String() const {
-  char buffer[100];
-  snprintf(buffer, 100, "%f %f", x_.DoubleValue(), y_.DoubleValue());
-  return std::string(buffer);
+  std::array<char, 100> buffer;
+  snprintf(buffer.data(), buffer.size(), "%f %f", x_.DoubleValue(),
+           y_.DoubleValue());
+  return std::string(buffer.data());
 }
 
 }  // namespace dux

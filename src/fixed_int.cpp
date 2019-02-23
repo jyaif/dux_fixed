@@ -26,9 +26,11 @@ float FInt::FloatValue() const DUX_NO_UB {
 
 FInt FInt::Sqrt() const DUX_NO_UB {
   assert(raw_value_ >= 0);
-  if (raw_value_ <= 0)
+  if (raw_value_ <= 0) {
     return FInt(0);
+  }
 
+  FInt result;
   // Specialisation for when the value fits in a int32_t.
   if (raw_value_ < 0x7FFFFFFF) {
     int32_t value = static_cast<int32_t>(raw_value_);
@@ -39,7 +41,7 @@ FInt FInt::Sqrt() const DUX_NO_UB {
       n1 = (n + (value / n)) >> 1;
     }
     RawType square_root_of_raw_value = n1;
-    return FInt::FromRawValue(square_root_of_raw_value << kHalfShift);
+    result = FInt::FromRawValue(square_root_of_raw_value << kHalfShift);
   } else {
     RawType n = (raw_value_ >> 1) + 1;
     RawType n1 = (n + (raw_value_ / n)) >> 1;
@@ -48,8 +50,9 @@ FInt FInt::Sqrt() const DUX_NO_UB {
       n1 = (n + (raw_value_ / n)) >> 1;
     }
     RawType square_root_of_raw_value = n1;
-    return FInt::FromRawValue(square_root_of_raw_value << kHalfShift);
+    result = FInt::FromRawValue(square_root_of_raw_value << kHalfShift);
   }
+  return result;
 }
 
 }  // namespace dux
