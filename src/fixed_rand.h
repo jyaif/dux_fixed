@@ -11,7 +11,7 @@ namespace dux {
 class FRandGenerator {
  public:
   FRandGenerator(int32_t seed = 0);
-  void SetSeed(int32_t seed);
+  void SetSeed(int64_t seed);
   dux::FInt RandFInt(dux::FInt min, dux::FInt max);
   dux::FVec2 RandFVec2(dux::FInt const minX,
                        dux::FInt const maxX,
