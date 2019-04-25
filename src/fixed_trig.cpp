@@ -224,7 +224,7 @@ FInt Atan2(FInt y, FInt x) {
     if (y.raw_value_ > 0) {
       return FInt::kHalfPi;
     } else {
-      return -FInt::kHalfPi;
+      return FInt::kPi + FInt::kHalfPi;
     }
   }
   int32_t d = static_cast<uint32_t>((y / x).raw_value_);
@@ -239,9 +239,12 @@ FInt Atan2(FInt y, FInt x) {
     }
   } else {
     if (x.raw_value_ > 0) {
-      return -angle;
+      if (angle == dux::FInt(0)) {
+        return FInt(0);
+      }
+      return FInt::kTwoPi-angle;
     } else {
-      return -FInt::kPi + angle;
+      return FInt::kPi + angle;
     }
   }
 }

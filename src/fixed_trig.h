@@ -15,6 +15,7 @@ FInt Sin(FInt angle);
 void Sincos(FInt angle, FInt& sin, FInt& cos);
 
 // Returns the principal value of the arc tangent of y/x.
+// Returns a value in the range [0, 2*pi[.
 FInt Atan2(FInt y, FInt x);
 
 // Returns an angle in radians from an angle in degrees.
