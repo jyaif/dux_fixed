@@ -12,8 +12,8 @@ class FVec2 {
   FInt x_;
   FInt y_;
 
-  FVec2();
-  FVec2(FVec2 const& v);
+  FVec2() = default;
+  FVec2(FVec2 const& v) = default;
   FVec2(FInt x, FInt y);
   FVec2(int x, int y);
 

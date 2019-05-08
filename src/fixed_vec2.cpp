@@ -5,10 +5,6 @@
 
 namespace dux {
 
-FVec2::FVec2() : x_(0), y_(0) {}
-
-FVec2::FVec2(FVec2 const& v) = default;
-
 FVec2::FVec2(FInt x, FInt y) : x_(x), y_(y) {}
 
 FVec2::FVec2(int x, int y) : x_(x), y_(y) {}

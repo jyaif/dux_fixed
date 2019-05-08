@@ -13,8 +13,8 @@ class FVec3 {
   FInt y_;
   FInt z_;
 
-  FVec3();
-  FVec3(FVec3 const& v);
+  FVec3() = default;
+  FVec3(FVec3 const& v) = default;
   FVec3(FInt x, FInt y, FInt z);
   FVec3(int x, int y, int z);
 

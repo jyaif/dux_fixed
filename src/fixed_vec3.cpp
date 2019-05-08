@@ -5,10 +5,6 @@
 
 namespace dux {
 
-FVec3::FVec3() {}
-
-FVec3::FVec3(FVec3 const& v) : x_(v.x_), y_(v.y_), z_(v.z_) {}
-
 FVec3::FVec3(FInt x, FInt y, FInt z) : x_(x), y_(y), z_(z) {}
 
 FVec3::FVec3(int x, int y, int z) : x_(x), y_(y), z_(z) {}
