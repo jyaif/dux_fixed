@@ -98,6 +98,13 @@ void TestFInt() {
   assert(FInt(-1) != FInt(1));
   assert(FInt(312) < FInt(1432));
 
+  // Test <<, >> operators.
+  assert((FInt(111) << 2) == FInt(444));
+  assert((FInt(111) >> 2) != FInt(111 >> 2));
+  assert((FInt(111) >> 2) == FInt::FromFraction(111, 4));
+  assert((FInt(-111) << 2) == FInt(-444));
+  assert((FInt(-111) >> 2) == FInt::FromFraction(-111, 4));
+
   // Test +, -, *, and / operators.
   assert(FInt(4) * FInt(2) == FInt(8));
   assert(FInt(-100) * FInt(-2) == FInt(200));

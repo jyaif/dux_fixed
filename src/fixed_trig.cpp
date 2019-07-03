@@ -242,7 +242,7 @@ FInt Atan2(FInt y, FInt x) {
       if (angle == dux::FInt(0)) {
         return FInt(0);
       }
-      return FInt::kTwoPi-angle;
+      return FInt::kTwoPi - angle;
     } else {
       return FInt::kPi + angle;
     }

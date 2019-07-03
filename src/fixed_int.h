@@ -174,6 +174,13 @@ class FInt {
     return raw_value_ >= o.raw_value_;
   }
 
+  constexpr FInt operator>>(int shift) const {
+    return dux::FInt::FromRawValue(raw_value_ >> shift);
+  }
+  constexpr FInt operator<<(int shift) const {
+    return dux::FInt::FromRawValue(raw_value_ << shift);
+  }
+
   template <typename T>
   constexpr FInt operator*(const T v) const {
     static_assert(std::is_integral<T>::value, "Integer required.");
