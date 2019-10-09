@@ -17,8 +17,8 @@ void TestFRandGenerator() {
   }
 
   FRandGenerator rg2 = rg;
-  assert(rg.RandInt() == -740800590);
-  assert(rg2.RandInt() == -740800590);
+  assert(rg.RandInt() == 1301828430);
+  assert(rg2.RandInt() == 1301828430);
 
   // Tests that the clamping works.
   for (int i = 0; i < 100; i++) {

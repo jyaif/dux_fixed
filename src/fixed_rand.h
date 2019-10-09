@@ -24,7 +24,7 @@ class FRandGenerator {
   float RandFloat(float max);
 
  private:
-  std::mt19937 rng_;
+  std::minstd_rand rng_;
 };
 
 }  // namespace dux
