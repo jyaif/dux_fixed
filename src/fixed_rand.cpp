@@ -9,7 +9,7 @@ void FRandGenerator::SetSeed(int64_t seed) {
 }
 
 dux::FInt FRandGenerator::RandFInt(dux::FInt min, dux::FInt max) {
-  assert(max > min);
+ assert(max >= min);
   std::uniform_int_distribution<int64_t> distribution(min.raw_value_,
                                                       max.raw_value_);
   return dux::FInt::FromRawValue(distribution(rng_));
@@ -27,6 +27,7 @@ uint32_t FRandGenerator::RandInt() {
 }
 
 int32_t FRandGenerator::RandInt(int32_t min, int32_t max) {
+  assert(max >= min);
   std::uniform_int_distribution<int64_t> distribution(min, max);
   return distribution(rng_);
 }
