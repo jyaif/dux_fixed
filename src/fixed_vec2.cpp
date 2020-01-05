@@ -7,7 +7,7 @@ namespace dux {
 
 FVec2::FVec2(FInt x, FInt y) : x_(x), y_(y) {}
 
-FVec2::FVec2(int x, int y) : x_(x), y_(y) {}
+FVec2::FVec2(int x, int y) : x_(FInt::FromInt(x)), y_(FInt::FromInt(y)) {}
 
 FInt FVec2::SquareLength() const {
   return x_ * x_ + y_ * y_;

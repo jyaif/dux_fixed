@@ -11,17 +11,24 @@ using namespace dux_test_utils;
 
 void TestFVec2() {
   // Test |Length|.
-  assert(dux::FVec2(10, 10).SquareLength() == dux::FInt(200));
-  assert(dux::FVec2(3, 4).Length() == dux::FInt(5));
+  assert(dux::FVec2(10, 10).SquareLength() == dux::FInt::FromInt(200));
+  assert(dux::FVec2(3, 4).Length() == dux::FInt::FromInt(5));
 
   // Test |DotProduct|.
-  assert(dux::FVec2(0, 0).DotProduct(dux::FVec2(0, 0)) == dux::FInt(0));
-  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(0, 0)) == dux::FInt(0));
-  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(0, 10)) == dux::FInt(0));
-  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, -10)) == dux::FInt(0));
-  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(10, 0)) == dux::FInt(100));
-  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, 0)) == dux::FInt(100));
-  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, 10)) == dux::FInt(200));
+  assert(dux::FVec2(0, 0).DotProduct(dux::FVec2(0, 0)) ==
+         dux::FInt::FromInt(0));
+  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(0, 0)) ==
+         dux::FInt::FromInt(0));
+  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(0, 10)) ==
+         dux::FInt::FromInt(0));
+  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, -10)) ==
+         dux::FInt::FromInt(0));
+  assert(dux::FVec2(10, 0).DotProduct(dux::FVec2(10, 0)) ==
+         dux::FInt::FromInt(100));
+  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, 0)) ==
+         dux::FInt::FromInt(100));
+  assert(dux::FVec2(10, 10).DotProduct(dux::FVec2(10, 10)) ==
+         dux::FInt::FromInt(200));
 
   // Test |Normalize|.
   bool normalized = true;
@@ -48,7 +55,7 @@ void TestFVec2() {
   // Test |FromAngle|.
   for (double float_angle = -10; float_angle < 20; float_angle += 0.01) {
     FInt angle = FInt::FromDouble(float_angle);
-    FVec2 v_from_angle = FVec2::FromAngle(angle, dux::FInt(10));
+    FVec2 v_from_angle = FVec2::FromAngle(angle, dux::FInt::FromInt(10));
     AssertNearlyEqual(cos(float_angle) * 10, v_from_angle.x_);
     AssertNearlyEqual(sin(float_angle) * 10, v_from_angle.y_);
   }

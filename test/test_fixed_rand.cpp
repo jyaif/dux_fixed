@@ -22,12 +22,13 @@ void TestFRandGenerator() {
 
   // Tests that the clamping works.
   for (int i = 0; i < 100; i++) {
-    dux::FInt v = rg.RandFInt(dux::FInt(1986), dux::FInt(1987));
-    assert(v >= dux::FInt(1986));
-    assert(v <= dux::FInt(1987));
+    dux::FInt v =
+        rg.RandFInt(dux::FInt::FromInt(1986), dux::FInt::FromInt(1987));
+    assert(v >= dux::FInt::FromInt(1986));
+    assert(v <= dux::FInt::FromInt(1987));
 
-    v = rg.RandFInt(dux::FInt(1986), dux::FInt(1986));
-    assert(v == dux::FInt(1986));
+    v = rg.RandFInt(dux::FInt::FromInt(1986), dux::FInt::FromInt(1986));
+    assert(v == dux::FInt::FromInt(1986));
   }
 
   // Tests that setting the seed works.

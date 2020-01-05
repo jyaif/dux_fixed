@@ -7,7 +7,8 @@ namespace dux {
 
 FVec3::FVec3(FInt x, FInt y, FInt z) : x_(x), y_(y), z_(z) {}
 
-FVec3::FVec3(int x, int y, int z) : x_(x), y_(y), z_(z) {}
+FVec3::FVec3(int x, int y, int z)
+    : x_(FInt::FromInt(x)), y_(FInt::FromInt(y)), z_(FInt::FromInt(z)) {}
 
 FInt FVec3::SquareLength() const {
   return x_ * x_ + y_ * y_ + z_ * z_;

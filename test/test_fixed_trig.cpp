@@ -36,7 +36,7 @@ void TestTrig() {
             dux::trig::Atan2(FInt::FromDouble(y), FInt::FromDouble(x));
 
         // Verify that Atan2 returns angles between 0 and 2PI.
-        assert(fixed_atan2_result >= dux::FInt(0));
+        assert(fixed_atan2_result >= dux::FInt::FromInt(0));
         assert(fixed_atan2_result < dux::FInt::kTwoPi);
 
         double atan2_result = atan2(y, x);

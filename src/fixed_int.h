@@ -23,10 +23,6 @@ class FInt {
     static_assert(kFractionMask == ~kIntegerMask, "");
   }
 
-  // Sets the integral part of the fixed point number to |value|.
-  constexpr explicit FInt(int32_t value) DUX_NO_UB
-      : raw_value_(static_cast<RawType>(value) << kShift) {}
-
   // Copy constructor.
   constexpr FInt(FInt const& o) : raw_value_(o.raw_value_) {}
 
@@ -34,6 +30,11 @@ class FInt {
   constexpr FInt& operator=(FInt const& o) {
     raw_value_ = o.raw_value_;
     return *this;
+  }
+
+  // Creates a fixed point number from an integer.
+  constexpr static FInt FromInt(int32_t value) {
+    return FInt(static_cast<RawType>(value) << kShift);
   }
 
   // Creates a fixed point number from the underlying representation.
@@ -45,7 +46,7 @@ class FInt {
   // numerator/denominator.
   constexpr static FInt FromFraction(int32_t numerator, int32_t denominator) {
     assert(denominator != 0);
-    FInt i(numerator);
+    FInt i = FromInt(numerator);
     i.raw_value_ /= denominator;
     return i;
   }

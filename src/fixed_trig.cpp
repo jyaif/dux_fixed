@@ -145,7 +145,7 @@ int32_t SearchValueInTanTable(int32_t value) {
 
 // Normalizes |angle| between 0 and 2*PI.
 void NormalizeAngle(dux::FInt& angle) {
-  if (angle < dux::FInt(0)) {
+  if (angle < dux::FInt::FromInt(0)) {
     angle = (-angle) % dux::FInt::kTwoPi;
     angle = dux::FInt::kTwoPi - angle;
   } else if (angle > dux::FInt::kTwoPi) {
@@ -229,7 +229,7 @@ FInt Atan2(FInt y, FInt x) {
   }
   int32_t d = static_cast<uint32_t>((y / x).raw_value_);
   d = std::abs(d);
-  FInt angle = FInt::kHalfPi * FInt(SearchValueInTanTable(d));
+  FInt angle = FInt::kHalfPi * FInt::FromInt(SearchValueInTanTable(d));
   angle >>= 9;
   if (y.raw_value_ > 0) {
     if (x.raw_value_ > 0) {
@@ -239,8 +239,8 @@ FInt Atan2(FInt y, FInt x) {
     }
   } else {
     if (x.raw_value_ > 0) {
-      if (angle == dux::FInt(0)) {
-        return FInt(0);
+      if (angle == dux::FInt::FromInt(0)) {
+        return FInt::FromInt(0);
       }
       return FInt::kTwoPi - angle;
     } else {
