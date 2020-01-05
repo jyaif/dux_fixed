@@ -53,8 +53,8 @@ class FInt {
 
   // Creates a fixed point number from a double.
   constexpr static FInt FromDouble(double value) {
-    return FInt::FromFraction(static_cast<int32_t>(value * (1 << FInt::kShift)),
-                              (1 << FInt::kShift));
+    RawType raw_value = (value * (1 << FInt::kShift));
+    return FInt::FromRawValue(raw_value);
   }
 
   // Returns the integral part of the fixed point number.

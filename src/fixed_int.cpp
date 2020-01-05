@@ -4,8 +4,8 @@
 
 namespace dux {
 
-const FInt FInt::kMax = FInt::FromRawValue(0x7fffffffffffffffLL);
-const FInt FInt::kMin = FInt::FromRawValue(0x8000000000000000LL);
+const FInt FInt::kMax = FInt::FromRawValue(std::numeric_limits<RawType>::max());
+const FInt FInt::kMin = FInt::FromRawValue(std::numeric_limits<RawType>::min());
 const FInt FInt::kZero = FInt::FromRawValue(0LL);
 const FInt FInt::kHalfPi = FInt::FromRawValue(6434LL);
 const FInt FInt::kQuarterPi = FInt::FromRawValue(3217LL);

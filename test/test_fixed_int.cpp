@@ -11,6 +11,11 @@ using namespace dux::trig;
 using namespace dux_test_utils;
 
 void TestFInt() {
+  // Test |FromInt|, |FromRawValue|, |FromDouble|.
+  assert(FInt::FromInt(12).raw_value_ == 12 << FInt::kShift);
+  assert(FInt::FromRawValue(12).raw_value_ == 12);
+  assert(FInt::FromDouble(12) == FInt::FromInt(12));
+
   // Test |Int32|.
   assert(FInt::FromInt(4).Int32() == 4);
   assert(FInt::FromInt(-4).Int32() == -4);
@@ -107,6 +112,7 @@ void TestFInt() {
 
   // Test +, -, *, and / operators.
   assert(FInt::FromInt(4) * FInt::FromInt(2) == FInt::FromInt(8));
+  assert(FInt::FromInt(4) * FInt::FromInt(-1) == FInt::FromInt(-4));
   assert(FInt::FromInt(-100) * FInt::FromInt(-2) == FInt::FromInt(200));
   assert(FInt::FromInt(40) / FInt::FromInt(2) == FInt::FromInt(20));
   int32_t int32_t_val = 2;
@@ -136,6 +142,7 @@ void TestFInt() {
   // Test constants.
   assert(FInt::kMax > dux::FInt::FromInt(10000000));
   assert(FInt::kMin < dux::FInt::FromInt(-10000000));
+  assert(FInt::kMax.raw_value_ + 1 == FInt::kMin.raw_value_);
   assert(FInt::kZero == dux::FInt::FromInt(0));
   AssertNearlyEqual(FInt::kQuarterPi.DoubleValue() * 2, FInt::kHalfPi);
   AssertNearlyEqual(FInt::kHalfPi.DoubleValue() * 2, FInt::kPi);
