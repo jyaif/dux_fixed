@@ -1,6 +1,7 @@
 #include "fixed_int.h"
 
 #include <cassert>
+#include <limits>
 
 namespace dux {
 
