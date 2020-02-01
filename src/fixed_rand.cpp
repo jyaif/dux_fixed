@@ -2,9 +2,9 @@
 
 namespace dux {
 
-FRandGenerator::FRandGenerator(int32_t seed) : rng_(seed) {}
+FRandGenerator::FRandGenerator(uint32_t seed) : rng_(seed) {}
 
-void FRandGenerator::SetSeed(int64_t seed) {
+void FRandGenerator::SetSeed(uint32_t seed) {
   rng_.seed(seed);
 }
 
