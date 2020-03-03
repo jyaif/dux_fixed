@@ -9,8 +9,6 @@
 
 namespace dux {
 
-#define DUX_NO_UB __attribute__((no_sanitize("shift")))
-
 // Class encapsulating 52-12 fixed point numbers.
 class FInt {
  public:
@@ -34,7 +32,7 @@ class FInt {
 
   // Creates a fixed point number from an integer.
   constexpr static FInt FromInt(int32_t value) {
-    return FInt(static_cast<RawType>(value) << kShift);
+    return FInt(static_cast<RawType>(value) * (1 << kShift));
   }
 
   // Creates a fixed point number from the underlying representation.
@@ -58,8 +56,8 @@ class FInt {
   }
 
   // Returns the integral part of the fixed point number.
-  constexpr int32_t Int32() const DUX_NO_UB {
-    return static_cast<int32_t>(raw_value_ >> kShift);
+  constexpr int32_t Int32() const {
+    return static_cast<int32_t>(raw_value_ / (1 << kShift));
   }
 
   // Returns an approximation as a double of the fixed point number.
@@ -115,11 +113,11 @@ class FInt {
   constexpr FInt operator-(const FInt& o) const {
     return FInt::FromRawValue(raw_value_ - o.raw_value_);
   }
-  constexpr FInt operator*(const FInt& o) const DUX_NO_UB {
-    return FInt::FromRawValue((raw_value_ * o.raw_value_) >> kShift);
+  constexpr FInt operator*(const FInt& o) const {
+    return FInt::FromRawValue((raw_value_ * o.raw_value_) / (1 << kShift));
   }
-  constexpr FInt operator/(const FInt& o) const DUX_NO_UB {
-    return FInt::FromRawValue((raw_value_ << kShift) / o.raw_value_);
+  constexpr FInt operator/(const FInt& o) const {
+    return FInt::FromRawValue((raw_value_ * (1 << kShift)) / o.raw_value_);
   }
   constexpr FInt operator%(const FInt& o) const {
     assert(o.raw_value_ != 0);
@@ -140,21 +138,21 @@ class FInt {
 
   constexpr void operator+=(const FInt& o) { raw_value_ += o.raw_value_; }
   constexpr void operator-=(const FInt& o) { raw_value_ -= o.raw_value_; }
-  constexpr void operator*=(const FInt& o) DUX_NO_UB {
+  constexpr void operator*=(const FInt& o) {
     raw_value_ *= o.raw_value_;
-    raw_value_ >>= kShift;
+    raw_value_ /= (1 << kShift);
   }
-  constexpr void operator/=(const FInt& o) DUX_NO_UB {
-    raw_value_ <<= kShift;
-    assert(o.raw_value_ > 0);
+  constexpr void operator/=(const FInt& o) {
+    raw_value_ *= (1 << kShift);
+    assert(o.raw_value_ != 0);
     raw_value_ /= o.raw_value_;
   }
   constexpr void operator%=(const FInt& o) {
-    assert(o.raw_value_ > 0);
+    assert(o.raw_value_ != 0);
     raw_value_ %= o.raw_value_;
   }
-  constexpr void operator>>=(int shift) DUX_NO_UB { raw_value_ >>= shift; }
-  constexpr void operator<<=(int shift) DUX_NO_UB { raw_value_ <<= shift; }
+  constexpr void operator>>=(int shift) { raw_value_ /= (1 << shift); }
+  constexpr void operator<<=(int shift) { raw_value_ *= (1 << shift); }
 
   constexpr bool operator!=(const FInt& o) const {
     return raw_value_ != o.raw_value_;

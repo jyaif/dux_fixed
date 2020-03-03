@@ -113,8 +113,12 @@ void TestFInt() {
   // Test +, -, *, and / operators.
   assert(FInt::FromInt(4) * FInt::FromInt(2) == FInt::FromInt(8));
   assert(FInt::FromInt(4) * FInt::FromInt(-1) == FInt::FromInt(-4));
+  assert(FInt::FromInt(-4) * FInt::FromInt(1) == FInt::FromInt(-4));
   assert(FInt::FromInt(-100) * FInt::FromInt(-2) == FInt::FromInt(200));
   assert(FInt::FromInt(40) / FInt::FromInt(2) == FInt::FromInt(20));
+  assert(FInt::FromInt(40) / FInt::FromInt(-2) == FInt::FromInt(-20));
+  assert(FInt::FromInt(-40) / FInt::FromInt(2) == FInt::FromInt(-20));
+  assert(FInt::FromInt(-40) / FInt::FromInt(-2) == FInt::FromInt(20));
   int32_t int32_t_val = 2;
   uint32_t uint32_t_val = 2;
   int64_t int64_t_val = 2;
@@ -127,6 +131,12 @@ void TestFInt() {
   assert(FInt::FromInt(40) / int64_t_val == FInt::FromInt(20));
   assert(FInt::FromInt(40) * uint64_t_val == FInt::FromInt(80));
   assert(FInt::FromInt(40) / uint64_t_val == FInt::FromInt(20));
+  int32_t_val = -2;
+  int64_t_val = -2;
+  assert(FInt::FromInt(40) * int32_t_val == FInt::FromInt(-80));
+  assert(FInt::FromInt(40) / int32_t_val == FInt::FromInt(-20));
+  assert(FInt::FromInt(40) * int64_t_val == FInt::FromInt(-80));
+  assert(FInt::FromInt(40) / int64_t_val == FInt::FromInt(-20));
 
   // Test +=, -=, *=, and /= operators.
   FInt a = FInt::FromInt(43);
@@ -136,7 +146,11 @@ void TestFInt() {
   assert(a == FInt::FromInt(42));
   a *= FInt::FromInt(3);
   assert(a == FInt::FromInt(42 * 3));
+  a *= FInt::FromInt(-3);
+  assert(a == FInt::FromInt(42 * -9));
   a /= FInt::FromInt(3);
+  assert(a == FInt::FromInt(42 * -3));
+  a /= FInt::FromInt(-3);
   assert(a == FInt::FromInt(42));
 
   // Test constants.
