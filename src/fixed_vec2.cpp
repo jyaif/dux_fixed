@@ -144,11 +144,9 @@ FInt FVec2::Angle() {
   return dux::trig::Atan2(y_, x_);
 }
 
-std::string FVec2::String() const {
-  std::array<char, 100> buffer;
-  snprintf(buffer.data(), buffer.size(), "%f %f", x_.DoubleValue(),
-           y_.DoubleValue());
-  return std::string(buffer.data());
-}
-
 }  // namespace dux
+
+std::ostream& operator<<(std::ostream& stream, const dux::FVec2& fvec2) {
+  stream << "(" << fvec2.x_ << "," << fvec2.y_ << ")";
+  return stream;
+}

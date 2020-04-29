@@ -1,8 +1,6 @@
 #ifndef DUX_FILED_SRC_FIXED_VEC3_H_
 #define DUX_FILED_SRC_FIXED_VEC3_H_
 
-#include <string>
-
 #include "fixed_int.h"
 
 namespace dux {
@@ -28,7 +26,7 @@ class FVec3 {
 
   FVec3 operator+(const FVec3&) const;
   FVec3 operator-(const FVec3&) const;
-  FInt operator*(const FVec3&)const;
+  FInt operator*(const FVec3&) const;
   FVec3 operator-() const;
   FVec3 operator*(FInt) const;
 
@@ -43,10 +41,10 @@ class FVec3 {
 
   bool operator==(const FVec3&) const;
   bool operator!=(const FVec3&) const;
-
-  std::string String() const;
 };
 
 }  // namespace dux
+
+std::ostream& operator<<(std::ostream& stream, const dux::FVec3& fvec3);
 
 #endif  // DUX_FILED_SRC_FIXED_VEC3_H_

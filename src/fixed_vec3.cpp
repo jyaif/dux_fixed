@@ -128,11 +128,9 @@ bool FVec3::operator!=(const FVec3& other) const {
   return x_ != other.x_ || y_ != other.y_ || z_ != other.z_;
 }
 
-std::string FVec3::String() const {
-  std::array<char, 100> buffer;
-  snprintf(buffer.data(), buffer.size(), "%f %f %f", x_.DoubleValue(),
-           y_.DoubleValue(), z_.DoubleValue());
-  return std::string(buffer.data());
-}
-
 }  // namespace dux
+
+std::ostream& operator<<(std::ostream& stream, const dux::FVec3& fvec3) {
+  stream << "(" << fvec3.x_ << "," << fvec3.y_ << "," << fvec3.z_ << ")";
+  return stream;
+}
