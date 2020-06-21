@@ -27,6 +27,7 @@ class FVec2 {
   void Normalize(bool& success);
   void Normalize(bool& success, FInt newLength);
   FInt DotProduct(const FVec2& v) const;
+  // Returns a value in the range [0, 2*pi[.
   FInt Angle();
   void Rotate90Deg();
 

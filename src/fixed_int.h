@@ -107,6 +107,10 @@ class FInt {
   // Asserts if |this| is less than zero.
   FInt Sqrt() const;
 
+  // Returns a value that is always positive.
+  // |upper_bound| must be greater than 0.
+  FInt EuclideanDivisionRemainder(dux::FInt upper_bound) const;
+
   constexpr FInt operator+(const FInt& o) const {
     return FInt::FromRawValue(raw_value_ + o.raw_value_);
   }

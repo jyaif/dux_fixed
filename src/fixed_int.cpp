@@ -56,6 +56,18 @@ FInt FInt::Sqrt() const {
   return result;
 }
 
+FInt FInt::EuclideanDivisionRemainder(dux::FInt upper_bound) const {
+  assert(upper_bound > dux::FInt::FromInt(0));
+  if (raw_value_ >= 0) {
+    return dux::FInt(raw_value_ % upper_bound.raw_value_);
+  } else {
+    auto raw =
+        (upper_bound.raw_value_ + ((raw_value_ + 1) % upper_bound.raw_value_)) -
+        1;
+    return dux::FInt(raw);
+  }
+}
+
 }  // namespace dux
 
 std::ostream& operator<<(std::ostream& stream, const dux::FInt& fint) {
