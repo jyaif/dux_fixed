@@ -95,7 +95,7 @@ void TestFInt() {
     FInt v = FInt::FromRawValue(i);
     AssertNearlyEqual(
         static_cast<double>(sqrtf(static_cast<float>(v.DoubleValue()))),
-        v.Sqrt());
+        v.Sqrt(), 2.01);
   }
 
   // Test ==, !=, < operators.

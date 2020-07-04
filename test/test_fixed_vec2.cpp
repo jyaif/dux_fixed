@@ -60,5 +60,16 @@ void TestFVec2() {
     AssertNearlyEqual(sin(float_angle) * 10, v_from_angle.y_);
   }
 
+  // Test |Rotate|.
+  // Initialise a vector with 30 degrees (PI/6), and rotate it.
+  for (dux::FInt rotation; rotation < dux::FInt::kTwoPi;
+       rotation += (dux::FInt::kTwoPi * dux::FInt::FromFraction(1, 64))) {
+    FVec2 v = FVec2::FromAngle(dux::FInt::kPi * dux::FInt::FromFraction(1, 6),
+                               dux::FInt::FromInt(10));
+    v.Rotate(rotation);
+    AssertNearlyEqual(cos(M_PI / 6 + rotation.FloatValue()) * 10, v.x_, 0.04);
+    AssertNearlyEqual(sin(M_PI / 6 + rotation.FloatValue()) * 10, v.y_, 0.04);
+  }
+
   // TODO: test everything.
 }

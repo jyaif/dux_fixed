@@ -55,6 +55,15 @@ void FVec2::Rotate90Deg() {
   x_ = -x_;
 }
 
+void FVec2::Rotate(dux::FInt angle) {
+  dux::FInt sinn;
+  dux::FInt coss;
+  dux::trig::Sincos(angle, sinn, coss);
+  dux::FInt new_x = x_ * coss - y_ * sinn;
+  y_ = x_ * sinn + y_ * coss;
+  x_ = new_x;
+}
+
 void FVec2::Init(FInt x, FInt y) {
   x_ = x;
   y_ = y;

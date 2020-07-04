@@ -30,6 +30,7 @@ class FVec2 {
   // Returns a value in the range [0, 2*pi[.
   FInt Angle();
   void Rotate90Deg();
+  void Rotate(dux::FInt angle);
 
   FVec2 operator+(const FVec2&) const;
   FVec2 operator-(const FVec2&) const;

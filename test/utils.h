@@ -5,7 +5,9 @@
 
 namespace dux_test_utils {
 
-void AssertNearlyEqual(double expected, dux::FInt actual);
+void AssertNearlyEqual(double expected,
+                       dux::FInt actual,
+                       double threshold = 0.02);
 
 }  // namespace dux_test_utils
 
