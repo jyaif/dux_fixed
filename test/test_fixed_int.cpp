@@ -72,6 +72,19 @@ void TestFInt() {
   assert(FInt::FromDouble(-10.45).Round() == FInt::FromInt(-10));
   assert(FInt::FromDouble(-10.55).Round() == FInt::FromInt(-11));
 
+  // Test |Frac|.
+  assert(FInt::FromInt(0).Frac() == FInt::FromInt(0));
+  assert(FInt::FromInt(3).Frac() == FInt::FromInt(0));
+  assert(FInt::FromInt(-3).Frac() == FInt::FromInt(0));
+  assert(FInt::FromFraction(1, 2).Frac() == FInt::FromFraction(1, 2));
+  assert(FInt::FromFraction(101, 2).Frac() == FInt::FromFraction(1, 2));
+  assert(FInt::FromFraction(-1, 2).Frac() == FInt::FromFraction(1, 2));
+  assert(FInt::FromFraction(-101, 2).Frac() == FInt::FromFraction(1, 2));
+  assert(FInt::FromFraction(1, 3).Frac() == FInt::FromFraction(1, 3));
+  assert(FInt::FromFraction(4, 3).Frac() == FInt::FromFraction(1, 3));
+  AssertNearlyEqual(2.0 / 3, FInt::FromFraction(-1, 3).Frac());
+  AssertNearlyEqual(2.0 / 3, FInt::FromFraction(-4, 3).Frac());
+
   // Test same sign.
   assert(FInt::FromInt(20).IsSameSignAs(FInt::FromInt(10)));
   assert(FInt::FromInt(20).IsSameSignAs(FInt::FromInt(0)));

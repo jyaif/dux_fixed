@@ -97,6 +97,11 @@ class FInt {
     }
   }
 
+  // Returns the fractional part.
+  constexpr FInt Frac() const {
+    return FInt::FromRawValue(raw_value_ & kFractionMask);
+  }
+
   // Returns whether |other| is of the same sign as |this|.
   // Considers 0 as being a positive number.
   constexpr bool IsSameSignAs(const FInt& other) const {
