@@ -60,6 +60,9 @@ class FInt {
     return static_cast<int32_t>(raw_value_ / (1 << kShift));
   }
 
+  // Returns the integral part of the fixed point number.
+  constexpr int64_t Int64() const { return raw_value_ / (1 << kShift); }
+
   // Returns an approximation as a double of the fixed point number.
   double DoubleValue() const;
 

@@ -12,10 +12,10 @@ class FVec2 {
   FInt x_;
   FInt y_;
 
-  FVec2() = default;
-  FVec2(FVec2 const& v) = default;
-  FVec2(FInt x, FInt y);
-  FVec2(int x, int y);
+  constexpr FVec2() = default;
+  constexpr FVec2(FVec2 const& v) = default;
+  constexpr FVec2(FInt x, FInt y) : x_(x), y_(y) {}
+  constexpr FVec2(int x, int y) : x_(FInt::FromInt(x)), y_(FInt::FromInt(y)) {}
 
   void Init(FInt x, FInt y);
   static FVec2 FromAngle(FInt angle, FInt radius);
