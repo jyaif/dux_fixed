@@ -13,12 +13,12 @@ void TestFRandGenerator() {
   // compilers/libraries.
   // Also test that copy works.
   for (int i = 0; i < 5000; i++) {
-    rg.RandInt();
+    rg.RandUInt32();
   }
 
   FRandGenerator rg2 = rg;
-  assert(rg.RandInt() == 1301828430);
-  assert(rg2.RandInt() == 1301828430);
+  assert(rg.RandUInt32() == 1301828430);
+  assert(rg2.RandUInt32() == 1301828430);
 
   // Tests that the clamping works.
   for (int i = 0; i < 100; i++) {
@@ -34,7 +34,7 @@ void TestFRandGenerator() {
   // Tests that setting the seed works.
   rg.SetSeed(2019);
   FRandGenerator rg3(2019);
-  assert(rg.RandInt() == rg3.RandInt());
+  assert(rg.RandUInt32() == rg3.RandUInt32());
 
   // Tests that float rand works.
   for (int i = 0; i < 1000; i++) {

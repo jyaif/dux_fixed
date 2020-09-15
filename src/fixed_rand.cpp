@@ -22,13 +22,20 @@ dux::FVec2 FRandGenerator::RandFVec2(dux::FInt const minX,
   return dux::FVec2(RandFInt(minX, maxX), RandFInt(minY, maxY));
 }
 
-uint32_t FRandGenerator::RandInt() {
+uint32_t FRandGenerator::RandUInt32() {
   return rng_();
 }
 
-int32_t FRandGenerator::RandInt(int32_t min, int32_t max) {
+
+int64_t FRandGenerator::RandInt64(int64_t min, int64_t max) {
   assert(max >= min);
   std::uniform_int_distribution<int64_t> distribution(min, max);
+  return distribution(rng_);
+}
+
+int32_t FRandGenerator::RandInt32(int32_t min, int32_t max) {
+  assert(max >= min);
+  std::uniform_int_distribution<int32_t> distribution(min, max);
   return distribution(rng_);
 }
 

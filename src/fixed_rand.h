@@ -18,9 +18,10 @@ class FRandGenerator {
                        dux::FInt const maxX,
                        dux::FInt const minY,
                        dux::FInt const maxY);
-  uint32_t RandInt();
+  uint32_t RandUInt32();
   // Returns a number in the range [min, max]. |max| must be >= |min|.
-  int32_t RandInt(int32_t min, int32_t max);
+  int64_t RandInt64(int64_t min, int64_t max);
+  int32_t RandInt32(int32_t min, int32_t max);
   // Returns a number in the range [0, max].
   float RandFloat(float max);
 
