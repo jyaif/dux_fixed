@@ -26,7 +26,6 @@ uint32_t FRandGenerator::RandUInt32() {
   return rng_();
 }
 
-
 int64_t FRandGenerator::RandInt64(int64_t min, int64_t max) {
   assert(max >= min);
   std::uniform_int_distribution<int64_t> distribution(min, max);

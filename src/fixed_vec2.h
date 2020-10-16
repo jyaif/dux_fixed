@@ -49,6 +49,12 @@ class FVec2 {
 
   bool operator==(const FVec2&) const;
   bool operator!=(const FVec2&) const;
+
+  // Returns true if the inequality is true for both |x_| and |y_|.
+  bool operator>=(const FVec2&) const;
+  bool operator<=(const FVec2&) const;
+  bool operator>(const FVec2&) const;
+  bool operator<(const FVec2&) const;
 };
 
 }  // namespace dux

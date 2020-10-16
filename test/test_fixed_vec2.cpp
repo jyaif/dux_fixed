@@ -71,5 +71,34 @@ void TestFVec2() {
     AssertNearlyEqual(sin(M_PI / 6 + rotation.FloatValue()) * 10, v.y_, 0.04);
   }
 
+  // Test comparisons.
+  // ==
+  assert(dux::FVec2(1, 2) == dux::FVec2(1, 2));
+  assert(dux::FVec2(1, 2) == dux::FVec2(1, 3) == false);
+  // !=
+  assert(dux::FVec2(1, 2) != dux::FVec2(2, 3));
+  assert(dux::FVec2(1, 2) != dux::FVec2(1, 3));
+  assert(dux::FVec2(1, 2) != dux::FVec2(1, 2) == false);
+  // <
+  assert(dux::FVec2(0, 0) < dux::FVec2(1, 1));
+  assert(dux::FVec2(0, 0) < dux::FVec2(0, 1) == false);
+  assert(dux::FVec2(1, 1) < dux::FVec2(0, 0) == false);
+  // <=
+  assert(dux::FVec2(0, 0) <= dux::FVec2(1, 1));
+  assert(dux::FVec2(0, 0) <= dux::FVec2(0, 1));
+  assert(dux::FVec2(0, 0) <= dux::FVec2(0, 0));
+  assert(dux::FVec2(1, 1) <= dux::FVec2(0, 0) == false);
+  assert(dux::FVec2(1, 0) <= dux::FVec2(0, 0) == false);
+  // >
+  assert(dux::FVec2(0, 0) > dux::FVec2(1, 1) == false);
+  assert(dux::FVec2(0, 0) > dux::FVec2(0, 1) == false);
+  assert(dux::FVec2(1, 1) > dux::FVec2(0, 0));
+  // >=
+  assert(dux::FVec2(0, 0) >= dux::FVec2(1, 1) == false);
+  assert(dux::FVec2(0, 0) >= dux::FVec2(0, 1) == false);
+  assert(dux::FVec2(0, 0) >= dux::FVec2(0, 0));
+  assert(dux::FVec2(1, 1) >= dux::FVec2(0, 0));
+  assert(dux::FVec2(1, 0) >= dux::FVec2(0, 0));
+
   // TODO: test everything.
 }

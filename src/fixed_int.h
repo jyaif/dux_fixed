@@ -217,11 +217,11 @@ class FInt {
   }
 
   RawType raw_value_;
-  static const int kShift = 12;
-  static const RawType kFractionMask = (1 << kShift) - 1;
-  static const RawType kHighBitOfFraction = (1 << (kShift - 1));
-  static const RawType kIntegerMask = ~((1 << kShift) - 1);
-  static const int kHalfShift = kShift / 2;
+  static constexpr int kShift = 12;
+  static constexpr RawType kFractionMask = (1 << kShift) - 1;
+  static constexpr RawType kHighBitOfFraction = (1 << (kShift - 1));
+  static constexpr RawType kIntegerMask = ~((1 << kShift) - 1);
+  static constexpr int kHalfShift = kShift / 2;
   static const FInt kMax;
   static const FInt kMin;
   static const FInt kZero;
