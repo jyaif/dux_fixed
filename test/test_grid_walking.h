@@ -1,0 +1,6 @@
+#ifndef DUX_FILED_TEST_TEST_GRID_WALKING_H_
+#define DUX_FILED_TEST_TEST_GRID_WALKING_H_
+
+void TestGridWalking();
+
+#endif  // DUX_FILED_TEST_TEST_GRID_WALKING_H_

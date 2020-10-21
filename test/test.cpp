@@ -3,6 +3,7 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "test_grid_walking.h"
 #include "test_fixed_int.h"
 #include "test_fixed_rand.h"
 #include "test_fixed_trig.h"
@@ -15,6 +16,7 @@ int main(int argc, char* argv[]) {
   TestFRandGenerator();
   TestFVec2();
   TestTrig();
+  TestGridWalking();
   printf("tests successfully passed\n");
   return EXIT_SUCCESS;
 }

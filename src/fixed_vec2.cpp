@@ -163,7 +163,7 @@ bool FVec2::operator<(const FVec2& other) const {
   return x_ < other.x_ && y_ < other.y_;
 }
 
-FInt FVec2::Angle() {
+FInt FVec2::Angle() const {
   return dux::trig::Atan2(y_, x_);
 }
 
