@@ -47,7 +47,7 @@ std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
 
   bool swap = false;
 
-  if (end < start) {
+  if (end < start || (start.x_ > end.x_ && start.y_ < end.y_)) {
     swap = true;
     std::swap(start, end);
     std::swap(grid_start, grid_end);
@@ -59,32 +59,42 @@ std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
       abs(grid_end.x_ - grid_start.x_) + abs(grid_end.y_ - grid_start.y_);
   dux::FVec2 delta = end - start;
 
-  assert(start < end);
-
   if (start < end) {
-    dux::FInt Δx =
-        dux::FInt::FromInt(64) -
-        (start.x_.EuclideanDivisionRemainder(dux::FInt::FromInt(64)));
-    dux::FInt Δy =
-        dux::FInt::FromInt(64) -
-        (start.y_.EuclideanDivisionRemainder(dux::FInt::FromInt(64)));
+    // From bottom-left to top-right
+    dux::FInt Δx = dux::FInt::FromInt(64) -
+                   start.x_.EuclideanDivisionRemainder(dux::FInt::FromInt(64));
+    dux::FInt Δy = dux::FInt::FromInt(64) -
+                   start.y_.EuclideanDivisionRemainder(dux::FInt::FromInt(64));
     dux::FInt error = delta.x_ * Δy - delta.y_ * Δx;
     delta *= dux::FInt::FromInt(64);
-
-    //  printf("➡️:%f ⬆️:%f\n", -delta.y_.DoubleValue(),
-    //  delta.x_.DoubleValue());
-
     for (int i = 0; i < iterations; i++) {
       v.push_back(grid_start);
-      //    printf("error:%f\n", error.DoubleValue());
       if (error < dux::FInt::FromInt(0)) {
         error = error + delta.x_;
         grid_start.y_++;
-        //      printf("⬆️\n");
       } else {
         error = error - delta.y_;
         grid_start.x_++;
-        //      printf("➡️\n");
+      }
+    }
+    v.push_back(grid_end);
+  } else {
+    assert(start.x_ < end.x_ && start.y_ > end.y_);
+    // From top-left to bottom-right
+    dux::FInt Δx =
+        dux::FInt::FromInt(64) -
+        (start.x_.EuclideanDivisionRemainder(dux::FInt::FromInt(64)));
+    dux::FInt Δy = start.y_.EuclideanDivisionRemainder(dux::FInt::FromInt(64));
+    dux::FInt error = delta.x_ * Δy + delta.y_ * Δx;
+    delta *= dux::FInt::FromInt(64);
+    for (int i = 0; i < iterations; i++) {
+      v.push_back(grid_start);
+      if (error < dux::FInt::FromInt(0)) {
+        error = error + delta.x_;
+        grid_start.y_--;
+      } else {
+        error = error + delta.y_;
+        grid_start.x_++;
       }
     }
     v.push_back(grid_end);

@@ -28,10 +28,8 @@ std::vector<GridPosition> CorrectAndSlowWalk(dux::FVec2 start,
     double float_x = (x0 * steps + (dx * i)) / steps;
     double float_y = (y0 * steps + (dy * i)) / steps;
 
-    int x = float_x;
-    x /= kGridSize;
-    int y = float_y;
-    y /= kGridSize;
+    int x = floor(float_x / kGridSize);
+    int y = floor(float_y / kGridSize);
     GridPosition p{x, y};
     if (v.empty()) {
       v.push_back(p);
@@ -54,14 +52,10 @@ void AssertVecEqual(std::vector<GridPosition> a, std::vector<GridPosition> b) {
 struct WalkVerificationArgs {
   dux::FVec2 start_;
   dux::FVec2 end_;
-  std::vector<GridPosition> expected_result_;
   WalkVerificationArgs FlipXAndY() const {
     WalkVerificationArgs args = *this;
     std::swap(args.start_.x_, args.start_.y_);
     std::swap(args.end_.x_, args.end_.y_);
-    for (int i = 0; i < expected_result_.size(); i++) {
-      std::swap(args.expected_result_[i].x_, args.expected_result_[i].y_);
-    }
     return args;
   }
   WalkVerificationArgs Translate() const {
@@ -71,10 +65,6 @@ struct WalkVerificationArgs {
     dux::FVec2 offset(dx * kGridSize, dy * kGridSize);
     args.start_ += offset;
     args.end_ += offset;
-    for (int i = 0; i < expected_result_.size(); i++) {
-      args.expected_result_[i].x_ += dx;
-      args.expected_result_[i].y_ += dy;
-    }
     return args;
   }
   WalkVerificationArgs SwapStartAndEnding() const {
@@ -82,17 +72,28 @@ struct WalkVerificationArgs {
     const int dy = 3;
     WalkVerificationArgs args = *this;
     std::swap(args.start_, args.end_);
-    std::reverse(args.expected_result_.begin(), args.expected_result_.end());
+    return args;
+  }
+
+  WalkVerificationArgs MultiplyByMinusOne() const {
+    WalkVerificationArgs args = *this;
+    args.start_.x_ *= dux::FInt::FromInt(-1);
+    args.start_.y_ *= dux::FInt::FromInt(-1);
+    args.end_.x_ *= dux::FInt::FromInt(-1);
+    args.end_.y_ *= dux::FInt::FromInt(-1);
+    return args;
+  }
+
+  WalkVerificationArgs FlipVertically() const {
+    WalkVerificationArgs args = *this;
+    args.start_.y_ *= dux::FInt::FromInt(-1);
+    args.end_.y_ *= dux::FInt::FromInt(-1);
     return args;
   }
 };
 
 void VerifyWalk(WalkVerificationArgs args) {
   auto result = Walk(args.start_, args.end_);
-
-  if (!args.expected_result_.empty()) {
-    AssertVecEqual(result, args.expected_result_);
-  }
 
   double steps = 100;
   std::vector<GridPosition> computed_expected_results;
@@ -105,25 +106,29 @@ void VerifyWalk(WalkVerificationArgs args) {
   AssertVecEqual(result, computed_expected_results);
 }
 
-void VerifyWalkAllDirections(dux::FVec2 start,
-                             std::pair<int, int> end,
-                             std::vector<GridPosition> expected_result) {
+void VerifyWalkAllDirections(dux::FVec2 start, std::pair<int, int> end) {
   WalkVerificationArgs args;
   args.start_ = start;
   args.end_ = dux::FVec2(end.first, end.second);
-  args.expected_result_ = expected_result;
-
-  for (int i = 0; i < 2; i++) {
-    auto args2 = args.FlipXAndY();
-    auto args3 = args.Translate();
-    auto args4 = args.FlipXAndY().Translate();
-    auto args5 = args.Translate().FlipXAndY();
+  for (int i = 0; i < 3; i++) {
     VerifyWalk(args);
-    VerifyWalk(args2);
-    VerifyWalk(args3);
-    VerifyWalk(args4);
-    VerifyWalk(args5);
-    args = args.SwapStartAndEnding();
+    VerifyWalk(args.FlipXAndY());
+    VerifyWalk(args.Translate());
+    VerifyWalk(args.FlipXAndY().Translate());
+    VerifyWalk(args.Translate().FlipXAndY());
+
+    VerifyWalk(args.MultiplyByMinusOne());
+    VerifyWalk(args.FlipXAndY().MultiplyByMinusOne());
+    VerifyWalk(args.Translate().MultiplyByMinusOne());
+    VerifyWalk(args.FlipXAndY().Translate().MultiplyByMinusOne());
+    VerifyWalk(args.Translate().FlipXAndY().MultiplyByMinusOne());
+
+    if (i == 0) {
+      args = args.SwapStartAndEnding();
+    }
+    if (i == 1) {
+      args = args.FlipVertically();
+    }
   }
 }
 
@@ -134,22 +139,19 @@ void TestGridWalking() {
   int r = 64;
 
   // Single square
-  VerifyWalkAllDirections({0, 0}, {0, 0}, {{0, 0}});
-  VerifyWalkAllDirections({r - 1, 0}, {r - 1, 0}, {{0, 0}});
-  VerifyWalkAllDirections({r, 0}, {r, 0}, {{1, 0}});
-  VerifyWalkAllDirections({10 * r, 5 * r}, {10 * r, 5 * r}, {{10, 5}});
-  VerifyWalkAllDirections({10 * r - 1, 5 * r - 1}, {10 * r - 1, 5 * r - 1},
-                          {{9, 4}});
+  VerifyWalkAllDirections({0, 0}, {0, 0});
+  VerifyWalkAllDirections({r - 1, 0}, {r - 1, 0});
+  VerifyWalkAllDirections({r, 0}, {r, 0});
+  VerifyWalkAllDirections({10 * r, 5 * r}, {10 * r, 5 * r});
+  VerifyWalkAllDirections({10 * r - 1, 5 * r - 1}, {10 * r - 1, 5 * r - 1});
 
   // Axis-aligned lines
-  VerifyWalkAllDirections({0, 0}, {r, 0}, {{0, 0}, {1, 0}});
-  VerifyWalkAllDirections({0, 0}, {2 * r, 0}, {{0, 0}, {1, 0}, {2, 0}});
-  VerifyWalkAllDirections({0, 0}, {2 * r - 1, 0}, {{0, 0}, {1, 0}});
-  VerifyWalkAllDirections({0, 0}, {r, r - 1}, {{0, 0}, {1, 0}});
-  VerifyWalkAllDirections({10 * r, r - 1}, {12 * r, 0},
-                          {{10, 0}, {11, 0}, {12, 0}});
-  VerifyWalkAllDirections({10 * r, 5 * r - 1}, {12 * r, 4 * r},
-                          {{10, 4}, {11, 4}, {12, 4}});
+  VerifyWalkAllDirections({0, 0}, {r, 0});
+  VerifyWalkAllDirections({0, 0}, {2 * r, 0});
+  VerifyWalkAllDirections({0, 0}, {2 * r - 1, 0});
+  VerifyWalkAllDirections({1, 1}, {3 * r, r - 1});
+  VerifyWalkAllDirections({10 * r, r - 1}, {12 * r, 1});
+  VerifyWalkAllDirections({10 * r, 5 * r - 1}, {12 * r, 4 * r + 1});
 
   dux::FRandGenerator rng;
   dux::FInt offset = dux::FInt::FromInt(10);
@@ -157,10 +159,12 @@ void TestGridWalking() {
   for (int x = 1; x < 20; x++) {
     for (int y = 1; y < 20; y++) {
       if (x != y) {
+        rng.RandFVec2(dux::FInt::FromInt(0), dux::FInt::FromInt(64),
+                      dux::FInt::FromInt(0), dux::FInt::FromInt(64));
         dux::FVec2 start =
             rng.RandFVec2(dux::FInt::FromInt(0), dux::FInt::FromInt(64),
                           dux::FInt::FromInt(0), dux::FInt::FromInt(64));
-        VerifyWalkAllDirections(start, {x * r + 20, y * r + 31}, {});
+        VerifyWalkAllDirections(start, {x * r + 20, y * r + 31});
       }
     }
   }
