@@ -151,6 +151,20 @@ void TestFInt() {
   assert(FInt::FromInt(40) * int64_t_val == FInt::FromInt(-80));
   assert(FInt::FromInt(40) / int64_t_val == FInt::FromInt(-20));
 
+  // Test % operator.
+  assert(FInt::FromInt(0) % FInt::FromInt(10) == FInt::FromInt(0));
+  assert(FInt::FromRawValue(1) % FInt::FromInt(10) == FInt::FromRawValue(1));
+  assert(FInt::FromInt(4) % FInt::FromInt(10) == FInt::FromInt(4));
+  assert(FInt::FromInt(10) % FInt::FromInt(10) == FInt::FromInt(0));
+  assert(FInt::FromInt(14) % FInt::FromInt(10) == FInt::FromInt(4));
+  assert(FInt::FromInt(104) % FInt::FromInt(10) == FInt::FromInt(4));
+  // Negative values
+  assert(FInt::FromRawValue(-1) % FInt::FromInt(10) == FInt::FromRawValue(-1));
+  assert(FInt::FromInt(-4) % FInt::FromInt(10) == FInt::FromInt(-4));
+  assert(FInt::FromInt(-10) % FInt::FromInt(10) == FInt::FromInt(0));
+  assert(FInt::FromInt(-14) % FInt::FromInt(10) == FInt::FromInt(-4));
+  assert(FInt::FromInt(-104) % FInt::FromInt(10) == FInt::FromInt(-4));
+
   // Euclidean division remainder
   assert(FInt::FromInt(0).EuclideanDivisionRemainder(FInt::FromInt(10)) ==
          FInt::FromInt(0));
@@ -164,7 +178,7 @@ void TestFInt() {
          FInt::FromInt(4));
   assert(FInt::FromInt(104).EuclideanDivisionRemainder(FInt::FromInt(10)) ==
          FInt::FromInt(4));
-
+  // Negative values
   assert(FInt::FromRawValue(-1).EuclideanDivisionRemainder(FInt::FromInt(10)) ==
          FInt::FromRawValue(FInt::FromInt(10).raw_value_ - 1));
   assert(FInt::FromInt(-1).EuclideanDivisionRemainder(FInt::FromInt(10)) ==

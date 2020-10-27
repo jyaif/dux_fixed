@@ -17,7 +17,8 @@ FInt FVec2::SquareLengthFrom(FVec2 const& c) const {
 
 FInt FVec2::Length() {
   // This works poorly with x_ and y_ that are very small:
-  // If x_ is less than 0.015625 (sqrt(4096)/4096), x_*x_ results in 0, even though sqrt(x_*x_) would not be 0.
+  // If x_ is less than 0.015625 (sqrt(4096)/4096), x_*x_ results in 0, even
+  // though sqrt(x_*x_) would not be 0.
   return ((x_ * x_) + (y_ * y_)).Sqrt();
 }
 
