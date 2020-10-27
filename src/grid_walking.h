@@ -18,6 +18,8 @@ struct GridPosition {
   }
 };
 
+dux::GridPosition GridPositionFromFVec2(dux::FVec2 v);
+
 // Returns a 4-connected line on a grid where each square is 64x64.
 // The grid is at most 2^15 wide.
 std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end);

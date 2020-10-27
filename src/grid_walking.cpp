@@ -4,15 +4,6 @@ namespace {
 
 constexpr int kGridShift = 6;
 
-dux::GridPosition GridPositionFromFVec2(dux::FVec2 v) {
-  dux::GridPosition p;
-  p.x_ =
-      static_cast<int32_t>(v.x_.raw_value_ >> (kGridShift + dux::FInt::kShift));
-  p.y_ =
-      static_cast<int32_t>(v.y_.raw_value_ >> (kGridShift + dux::FInt::kShift));
-  return p;
-}
-
 std::vector<dux::GridPosition> AxisAlignedWalk(dux::GridPosition start,
                                                dux::GridPosition end) {
   std::vector<dux::GridPosition> positions;
@@ -37,6 +28,15 @@ std::vector<dux::GridPosition> AxisAlignedWalk(dux::GridPosition start,
 }  // namespace
 
 namespace dux {
+
+dux::GridPosition GridPositionFromFVec2(dux::FVec2 v) {
+  dux::GridPosition p;
+  p.x_ =
+      static_cast<int32_t>(v.x_.raw_value_ >> (kGridShift + dux::FInt::kShift));
+  p.y_ =
+      static_cast<int32_t>(v.y_.raw_value_ >> (kGridShift + dux::FInt::kShift));
+  return p;
+}
 
 std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
   dux::GridPosition grid_start = GridPositionFromFVec2(start);
