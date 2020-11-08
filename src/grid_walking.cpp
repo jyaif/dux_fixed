@@ -1,5 +1,7 @@
 #include "grid_walking.h"
 
+#include <algorithm>
+
 namespace {
 
 constexpr int kGridShift = 6;
