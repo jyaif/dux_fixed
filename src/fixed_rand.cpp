@@ -2,12 +2,8 @@
 
 namespace {
 
-inline int dux_clz(unsigned __x) { return __builtin_clz(__x); }
-//inline int dux_clz(unsigned long __x) { return __builtin_clzl(__x); }
-inline int dux_clz(unsigned long long __x) { return __builtin_clzll(__x); }
-
-
-// __independent_bits_engine
+inline int dux_clz(uint32_t __x) { return __builtin_clz(__x); }
+inline int dux_clz(uint64_t __x) { return __builtin_clzll(__x); }
 
 template <unsigned long long _Xp, size_t _Rp>
 struct __log2_imp
