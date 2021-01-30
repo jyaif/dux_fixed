@@ -7,6 +7,11 @@
 
 namespace dux {
 
+struct GridSize {
+  int32_t width_;
+  int32_t height_;
+};
+
 struct GridPosition {
   int32_t x_;
   int32_t y_;
@@ -21,8 +26,9 @@ struct GridPosition {
 dux::GridPosition GridPositionFromFVec2(dux::FVec2 v);
 
 // Returns a 4-connected line on a grid where each square is 64x64.
+// Does not return positions outside of (0, 0) x (size.x_ - 1, size.y_ - 1).
 // The grid is at most 2^15 wide.
-std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end);
+std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end, GridSize size);
 
 }  // namespace dux
 

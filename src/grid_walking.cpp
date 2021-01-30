@@ -6,22 +6,33 @@ namespace {
 
 constexpr int kGridShift = 6;
 
+inline void AddToVector(std::vector<dux::GridPosition>& vec,
+                        dux::GridPosition const& value,
+                        dux::GridSize const& grid_size) {
+  if (value.x_ < 0 || value.y_ < 0 || value.x_ >= grid_size.width_ ||
+      value.y_ >= grid_size.height_) {
+    return;
+  }
+  vec.push_back(value);
+}
+
 std::vector<dux::GridPosition> AxisAlignedWalk(dux::GridPosition start,
-                                               dux::GridPosition end) {
+                                               dux::GridPosition end,
+                                               dux::GridSize const& grid_size) {
   std::vector<dux::GridPosition> positions;
   if (start.x_ != end.x_) {
     int32_t dx = end.x_ > start.x_ ? 1 : -1;
-    positions.push_back(start);
+    AddToVector(positions, start, grid_size);
     while (start != end) {
       start.x_ += dx;
-      positions.push_back(start);
+      AddToVector(positions, start, grid_size);
     }
   } else {
     int32_t dy = end.y_ > start.y_ ? 1 : -1;
-    positions.push_back(start);
+    AddToVector(positions, start, grid_size);
     while (start != end) {
       start.y_ += dy;
-      positions.push_back(start);
+      AddToVector(positions, start, grid_size);
     }
   }
   return positions;
@@ -40,11 +51,13 @@ dux::GridPosition GridPositionFromFVec2(dux::FVec2 v) {
   return p;
 }
 
-std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
+std::vector<GridPosition> Walk(dux::FVec2 start,
+                               dux::FVec2 end,
+                               GridSize const grid_size) {
   dux::GridPosition grid_start = GridPositionFromFVec2(start);
   dux::GridPosition grid_end = GridPositionFromFVec2(end);
   if (grid_start.x_ == grid_end.x_ || grid_start.y_ == grid_end.y_) {
-    return AxisAlignedWalk(grid_start, grid_end);
+    return AxisAlignedWalk(grid_start, grid_end, grid_size);
   }
 
   bool swap = false;
@@ -70,7 +83,7 @@ std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
     dux::FInt error = delta.x_ * Δy - delta.y_ * Δx;
     delta *= dux::FInt::FromInt(64);
     for (int i = 0; i < iterations; i++) {
-      v.push_back(grid_start);
+      AddToVector(v, grid_start, grid_size);
       if (error < dux::FInt::FromInt(0)) {
         error = error + delta.x_;
         grid_start.y_++;
@@ -79,7 +92,7 @@ std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
         grid_start.x_++;
       }
     }
-    v.push_back(grid_end);
+    AddToVector(v, grid_end, grid_size);
   } else {
     assert(start.x_ < end.x_ && start.y_ > end.y_);
     // From top-left to bottom-right
@@ -90,7 +103,7 @@ std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
     dux::FInt error = delta.x_ * Δy + delta.y_ * Δx;
     delta *= dux::FInt::FromInt(64);
     for (int i = 0; i < iterations; i++) {
-      v.push_back(grid_start);
+      AddToVector(v, grid_start, grid_size);
       if (error < dux::FInt::FromInt(0)) {
         error = error + delta.x_;
         grid_start.y_--;
@@ -99,7 +112,7 @@ std::vector<GridPosition> Walk(dux::FVec2 start, dux::FVec2 end) {
         grid_start.x_++;
       }
     }
-    v.push_back(grid_end);
+    AddToVector(v, grid_end, grid_size);
   }
 
   if (swap) {

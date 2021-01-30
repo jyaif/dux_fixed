@@ -31,6 +31,9 @@ std::vector<GridPosition> CorrectAndSlowWalk(dux::FVec2 start,
     int x = floor(float_x / kGridSize);
     int y = floor(float_y / kGridSize);
     GridPosition p{x, y};
+    if (x < 0 || y < 0) {
+      continue;
+    }
     if (v.empty()) {
       v.push_back(p);
     } else {
@@ -93,7 +96,7 @@ struct WalkVerificationArgs {
 };
 
 void VerifyWalk(WalkVerificationArgs args) {
-  auto result = Walk(args.start_, args.end_);
+  auto result = Walk(args.start_, args.end_, {9999, 9999});
 
   double steps = 100;
   std::vector<GridPosition> computed_expected_results;
@@ -102,7 +105,6 @@ void VerifyWalk(WalkVerificationArgs args) {
         CorrectAndSlowWalk(args.start_, args.end_, steps);
     steps *= 2;
   } while (steps < 100000 && computed_expected_results.size() != result.size());
-
   AssertVecEqual(result, computed_expected_results);
 }
 
