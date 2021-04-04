@@ -47,14 +47,26 @@ class FVec2 {
   void operator*=(const int32_t s);
   void operator/=(const int32_t s);
 
-  bool operator==(const FVec2&) const;
-  bool operator!=(const FVec2&) const;
+  inline bool operator==(const FVec2& other) const {
+    return x_ == other.x_ && y_ == other.y_;
+  }
+  inline bool operator!=(const FVec2& other) const {
+    return x_ != other.x_ || y_ != other.y_;
+  }
 
   // Returns true if the inequality is true for both |x_| and |y_|.
-  bool operator>=(const FVec2&) const;
-  bool operator<=(const FVec2&) const;
-  bool operator>(const FVec2&) const;
-  bool operator<(const FVec2&) const;
+  inline bool operator>=(const FVec2& other) const {
+    return x_ >= other.x_ && y_ >= other.y_;
+  }
+  inline bool operator<=(const FVec2& other) const {
+    return x_ <= other.x_ && y_ <= other.y_;
+  }
+  inline bool operator>(const FVec2& other) const {
+    return x_ > other.x_ && y_ > other.y_;
+  }
+  inline bool operator<(const FVec2& other) const {
+    return x_ < other.x_ && y_ < other.y_;
+  }
 };
 
 }  // namespace dux

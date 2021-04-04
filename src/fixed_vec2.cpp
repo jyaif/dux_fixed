@@ -140,30 +140,6 @@ void FVec2::operator/=(const int32_t s) {
   y_ /= s;
 }
 
-bool FVec2::operator==(const FVec2& other) const {
-  return x_ == other.x_ && y_ == other.y_;
-}
-
-bool FVec2::operator!=(const FVec2& other) const {
-  return x_ != other.x_ || y_ != other.y_;
-}
-
-bool FVec2::operator>=(const FVec2& other) const {
-  return x_ >= other.x_ && y_ >= other.y_;
-}
-
-bool FVec2::operator<=(const FVec2& other) const {
-  return x_ <= other.x_ && y_ <= other.y_;
-}
-
-bool FVec2::operator>(const FVec2& other) const {
-  return x_ > other.x_ && y_ > other.y_;
-}
-
-bool FVec2::operator<(const FVec2& other) const {
-  return x_ < other.x_ && y_ < other.y_;
-}
-
 FInt FVec2::Angle() const {
   return dux::trig::Atan2(y_, x_);
 }

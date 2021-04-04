@@ -235,7 +235,7 @@ class FInt {
 
  private:
   // Private. Use |FromRawValue| instead.
-  constexpr explicit FInt(RawType raw_value) : raw_value_(raw_value) {}
+  inline constexpr explicit FInt(RawType raw_value) : raw_value_(raw_value) {}
 };
 
 }  // namespace dux
