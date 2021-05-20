@@ -1,25 +1,8 @@
-cmake_minimum_required (VERSION 2.6)
-project(dux_fixed)
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# for tests:
-include_directories("src")
-
-set(CMAKE_CXX_FLAGS "-std=c++17 -Werror")
-
-add_executable(
-  dux_fixed_test_bin
-  test/test.cpp
-  test/test_grid_walking.cpp
-  test/test_grid_walking.h
-  test/test_fixed_int.cpp
-  test/test_fixed_int.h
-  test/test_fixed_rand.cpp
-  test/test_fixed_rand.h
-  test/test_fixed_vec2.cpp
-  test/test_fixed_vec2.h
-  test/test_fixed_trig.cpp
-  test/test_fixed_trig.h
-  test/utils.cpp
+add_library(
+  dux_fixed
   src/grid_walking.cpp
   src/grid_walking.h
   src/fixed_int.cpp
@@ -33,3 +16,7 @@ add_executable(
   src/fixed_vec3.cpp
   src/fixed_vec3.h
 )
+
+source_group(src/.*)
+
+target_include_directories(dux_fixed PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/src")

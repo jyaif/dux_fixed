@@ -11,15 +11,15 @@ dux_fixed is a library doing deterministic computations.
 
 To run tests locally (requires cmake):
 
-```
+```bash
 mkdir out
 cd out
-cmake ..
+cmake ../test/
 make
-./dux_fixed_test_bin
+./dux_fixed_test
 ```
 
-## Example:
+## Example
 
 ```cpp
 // Arithmetic
