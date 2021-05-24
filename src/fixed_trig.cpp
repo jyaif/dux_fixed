@@ -117,9 +117,9 @@ std::array<int32_t, 512> kTanTable = {
      166852, 190697, 222489, 266996, 333755, 445017, 667538, 1335099},
 };
 
-int32_t SearchValueInTanTable(int32_t value) {
-  int32_t lowerBound = 0;
-  int32_t higherBound = kTanTable.size() - 1;
+uint32_t SearchValueInTanTable(int32_t value) {
+  uint32_t lowerBound = 0;
+  uint32_t higherBound = kTanTable.size() - 1;
   assert(value >= 0);
   if (value <= kTanTable[lowerBound]) {
     return lowerBound;
@@ -128,7 +128,7 @@ int32_t SearchValueInTanTable(int32_t value) {
     return higherBound;
   }
   while (higherBound - lowerBound > 1) {
-    int32_t index = (higherBound + lowerBound) / 2;
+    uint32_t index = (higherBound + lowerBound) / 2;
     int32_t valueInTheCenter = kTanTable[index];
     if (valueInTheCenter > value) {
       higherBound = index;
@@ -191,27 +191,27 @@ void Sincos(FInt angle, FInt& sin, FInt& cos) {
 
   if (angle < FInt::kPi) {
     if (angle < FInt::kHalfPi) {
-      int index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
-      assert(index >= 0 && index <= 512);
+      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+      assert(index <= 512);
       cos = FInt::FromRawValue(kCosTable[index]);
       sin = FInt::FromRawValue(kCosTable[512 - index]);
     } else {
       angle = FInt::kPi - angle;
-      int index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
-      assert(index >= 0 && index <= 512);
+      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+      assert(index <= 512);
       cos = FInt::FromRawValue(-kCosTable[index]);
       sin = FInt::FromRawValue(kCosTable[512 - index]);
     }
   } else {
     if (angle < FInt::kPi + FInt::kHalfPi) {
       angle -= FInt::kPi;
-      int index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
-      assert(index >= 0 && index <= 512);
+      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+      assert(index <= 512);
       cos = FInt::FromRawValue(-kCosTable[index]);
       sin = FInt::FromRawValue(-kCosTable[512 - index]);
     } else {
       angle = FInt::kTwoPi - angle;
-      int index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
       assert(index >= 0 && index <= 512);
       cos = FInt::FromRawValue(kCosTable[index]);
       sin = FInt::FromRawValue(-kCosTable[512 - index]);

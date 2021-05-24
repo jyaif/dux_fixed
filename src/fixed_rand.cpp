@@ -207,7 +207,7 @@ int32_t FRandGenerator::RandInt32(int32_t min, int32_t max) {
 }
 
 float FRandGenerator::RandFloat(float max) {
-  return std::generate_canonical<double, 12>(rng_) * max;
+  return std::generate_canonical<float, 12>(rng_) * max;
 }
 
 }  // namespace dux

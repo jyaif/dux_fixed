@@ -14,13 +14,13 @@ const FInt FInt::kPi = FInt::FromRawValue(12868LL);
 const FInt FInt::kTwoPi = FInt::FromRawValue(25736LL);
 
 double FInt::DoubleValue() const {
-  double v = raw_value_;
+  double v = static_cast<double>(raw_value_);
   v /= (1 << kShift);
   return v;
 }
 
 float FInt::FloatValue() const {
-  float v = raw_value_;
+  float v = static_cast<float>(raw_value_);
   v /= (1 << kShift);
   return v;
 }

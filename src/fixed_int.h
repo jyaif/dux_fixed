@@ -52,7 +52,7 @@ class FInt {
 
   // Creates a fixed point number from a double.
   [[nodiscard]] constexpr static FInt FromDouble(double value) {
-    RawType raw_value = (value * (1 << FInt::kShift));
+    RawType raw_value = static_cast<RawType>(value * (1 << FInt::kShift));
     return FInt::FromRawValue(raw_value);
   }
 
