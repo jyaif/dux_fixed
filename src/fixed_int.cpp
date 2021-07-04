@@ -57,7 +57,7 @@ FInt FInt::Sqrt() const {
 }
 
 FInt FInt::EuclideanDivisionRemainder(dux::FInt upper_bound) const {
-  assert(upper_bound > dux::FInt::FromInt(0));
+  assert(upper_bound > 0_fx);
   if (raw_value_ >= 0) {
     return dux::FInt(raw_value_ % upper_bound.raw_value_);
   } else {

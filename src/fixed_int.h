@@ -240,6 +240,14 @@ class FInt {
 
 }  // namespace dux
 
+// A shorthand for |dux::FInt::FromInt|:
+// `dux::FInt::FromInt(42)`
+// becomes
+// `42_fx`.
+constexpr dux::FInt operator"" _fx(unsigned long long int v) {
+  return dux::FInt::FromRawValue(v * (1 << dux::FInt::kShift));
+}
+
 std::ostream& operator<<(std::ostream& stream, const dux::FInt& fint);
 
 #endif  // DUX_FIXED_SRC_FIXED_INT_H_

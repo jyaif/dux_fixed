@@ -76,15 +76,13 @@ std::vector<GridPosition> Walk(dux::FVec2 start,
 
   if (start < end) {
     // From bottom-left to top-right
-    dux::FInt Δx = dux::FInt::FromInt(64) -
-                   start.x_.EuclideanDivisionRemainder(dux::FInt::FromInt(64));
-    dux::FInt Δy = dux::FInt::FromInt(64) -
-                   start.y_.EuclideanDivisionRemainder(dux::FInt::FromInt(64));
+    dux::FInt Δx = 64_fx - start.x_.EuclideanDivisionRemainder(64_fx);
+    dux::FInt Δy = 64_fx - start.y_.EuclideanDivisionRemainder(64_fx);
     dux::FInt error = delta.x_ * Δy - delta.y_ * Δx;
-    delta *= dux::FInt::FromInt(64);
+    delta *= 64_fx;
     for (int i = 0; i < iterations; i++) {
       AddToVector(v, grid_start, grid_size);
-      if (error < dux::FInt::FromInt(0)) {
+      if (error < 0_fx) {
         error = error + delta.x_;
         grid_start.y_++;
       } else {
@@ -96,15 +94,13 @@ std::vector<GridPosition> Walk(dux::FVec2 start,
   } else {
     assert(start.x_ < end.x_ && start.y_ > end.y_);
     // From top-left to bottom-right
-    dux::FInt Δx =
-        dux::FInt::FromInt(64) -
-        (start.x_.EuclideanDivisionRemainder(dux::FInt::FromInt(64)));
-    dux::FInt Δy = start.y_.EuclideanDivisionRemainder(dux::FInt::FromInt(64));
+    dux::FInt Δx = 64_fx - (start.x_.EuclideanDivisionRemainder(64_fx));
+    dux::FInt Δy = start.y_.EuclideanDivisionRemainder(64_fx);
     dux::FInt error = delta.x_ * Δy + delta.y_ * Δx;
-    delta *= dux::FInt::FromInt(64);
+    delta *= 64_fx;
     for (int i = 0; i < iterations; i++) {
       AddToVector(v, grid_start, grid_size);
-      if (error < dux::FInt::FromInt(0)) {
+      if (error < 0_fx) {
         error = error + delta.x_;
         grid_start.y_--;
       } else {

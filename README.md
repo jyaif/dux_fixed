@@ -23,15 +23,14 @@ make
 
 ```cpp
 // Arithmetic
-dux::FInt a = dux::FInt::FromInteger(42);
-dux::FInt b = dux::FInt::FromInteger(2);
-dux::FInt c = dux::FInt::FromInteger(84);
+dux::FInt a = 42_fx;
+dux::FInt b = 2_fx;
+dux::FInt c = 84_fx;
 assert(a * b == c);
 // Trigonometry
-dux::FInt zero = dux::FInt::FromInteger(0);
-assert(dux::trig::Sin(zero) == zero);
+assert(dux::trig::Sin(0_fx) == 0_fx);
 // 2D Vector
-dux::FVec2 v(3, 4);
-assert(v.Length() == dux::FInt::FromInteger(5));
+dux::FVec2 v(3_fx, 4_fx);
+assert(v.Length() == 5_fx);
 // And more (Grid walking, Random)
 ```
