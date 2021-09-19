@@ -155,14 +155,12 @@ void TestGridWalking() {
   VerifyWalkAllDirections({10 * r, r - 1}, {12 * r, 1});
   VerifyWalkAllDirections({10 * r, 5 * r - 1}, {12 * r, 4 * r + 1});
 
-  dux::FRandGenerator rng;
   dux::FInt offset = 10_fx;
 
   for (int x = 1; x < 20; x++) {
     for (int y = 1; y < 20; y++) {
       if (x != y) {
-        rng.RandFVec2(0_fx, 64_fx, 0_fx, 64_fx);
-        dux::FVec2 start = rng.RandFVec2(0_fx, 64_fx, 0_fx, 64_fx);
+        dux::FVec2 start = RandFVec2(0_fx, 64_fx, 0_fx, 64_fx);
         VerifyWalkAllDirections(start, {x * r + 20, y * r + 31});
       }
     }

@@ -7,8 +7,6 @@ add_library(
   src/grid_walking.h
   src/fixed_int.cpp
   src/fixed_int.h
-  src/fixed_rand.cpp
-  src/fixed_rand.h
   src/fixed_trig.cpp
   src/fixed_trig.h
   src/fixed_vec2.cpp

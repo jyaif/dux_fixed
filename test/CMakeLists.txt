@@ -12,8 +12,6 @@ add_executable(
   test_grid_walking.h
   test_fixed_int.cpp
   test_fixed_int.h
-  test_fixed_rand.cpp
-  test_fixed_rand.h
   test_fixed_vec2.cpp
   test_fixed_vec2.h
   test_fixed_trig.cpp

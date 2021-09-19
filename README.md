@@ -32,5 +32,4 @@ assert(dux::trig::Sin(0_fx) == 0_fx);
 // 2D Vector
 dux::FVec2 v(3_fx, 4_fx);
 assert(v.Length() == 5_fx);
-// And more (Grid walking, Random)
 ```
