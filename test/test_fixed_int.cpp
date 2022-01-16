@@ -192,6 +192,32 @@ void TestFInt() {
   assert((-16_fx).EuclideanDivisionRemainder(10_fx) == 4_fx);
   assert((-106_fx).EuclideanDivisionRemainder(10_fx) == 4_fx);
 
+  // Test x^y with integers powers
+  for (float x = -50; x < 50; x+=0.1) {
+    for (float y = -3; y < 4; y += 1) {
+      if (x > -0.1 && x < 0.1) {
+        // small numbers to a negative power don't work well, e.g.
+        // 0.000188^-2.000000 is supposed to be equal to 28147546,
+        // but is computed as 0 because the computation is
+        // turned into `1/(0.000188^2)`.
+        continue;
+      }
+      auto expected = pow(x, y);
+      auto actual = Pow(dux::FInt::FromDouble(x), dux::FInt::FromDouble(y));
+      auto delta = std::max(std::abs(expected / 25.0), 0.1);
+      AssertNearlyEqual(expected, actual, delta);
+    }
+  }
+
+  // 100^0.25 = 3.16227766017
+  AssertNearlyEqual(3.16, Pow(100_fx, dux::FInt::FromDouble(0.25)), 0.01);
+
+  // 100^2.25 = 31622.7766017
+  AssertNearlyEqual(31622.77, Pow(100_fx, dux::FInt::FromDouble(2.25)), 100);
+
+  // 1000^0.375 = 13.3352143216
+  AssertNearlyEqual(13.33, Pow(1000_fx, dux::FInt::FromDouble(0.375)), 0.1);
+
   // Test +=, -=, *=, and /= operators.
   FInt a = 43_fx;
   a += 1_fx;

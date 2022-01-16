@@ -238,6 +238,10 @@ class FInt {
   inline constexpr explicit FInt(RawType raw_value) : raw_value_(raw_value) {}
 };
 
+// Returns x^y
+// Disclaimer: when `y` is not an integer, the precision is low.
+[[nodiscard]] FInt Pow(FInt x, FInt y);
+
 }  // namespace dux
 
 // A shorthand for |dux::FInt::FromInt|:

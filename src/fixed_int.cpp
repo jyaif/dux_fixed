@@ -68,6 +68,47 @@ FInt FInt::EuclideanDivisionRemainder(dux::FInt upper_bound) const {
   }
 }
 
+[[nodiscard]] FInt Pow(FInt const x, FInt const y) {
+  if (y.raw_value_ == 0) {
+    return 1_fx; // x^0 = 1
+  }
+  if (x.raw_value_ == 0) {
+    return 0_fx; // 0^y = 0  if y!=0
+  }
+
+  bool y_is_negative = y < 0_fx;
+  FInt const positive_y = y_is_negative ? -y : y;
+  int32_t fractional_y = positive_y.raw_value_ & dux::FInt::kFractionMask;
+  int64_t integral_y = positive_y.raw_value_ & dux::FInt::kIntegerMask;
+  dux::FInt result = 1_fx;
+  dux::FInt squared = x;
+  if (integral_y) {
+    while (integral_y > dux::FInt::kFractionMask) {
+      if ((integral_y & (1 << dux::FInt::kShift)) != 0) {
+        result *= squared;
+      }
+      squared = (squared * squared);
+      integral_y >>= 1;
+    }
+  }
+  auto square_rooted = x;
+  while (fractional_y != 0) {
+    square_rooted = square_rooted.Sqrt();
+    if (square_rooted == 1_fx) {
+      break;
+    }
+    if (fractional_y & dux::FInt::kHighBitOfFraction) {
+      result *= square_rooted;
+    }
+    fractional_y <<= 1;
+    fractional_y &= dux::FInt::kFractionMask;
+  }
+  if (y_is_negative) {
+    return 1_fx / result;
+  }
+  return result;
+}
+
 }  // namespace dux
 
 std::ostream& operator<<(std::ostream& stream, const dux::FInt& fint) {

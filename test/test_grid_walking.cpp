@@ -1,6 +1,7 @@
 #include "test_grid_walking.h"
 
 #include <algorithm>
+#include <cmath>
 
 #include "grid_walking.h"
 #include "utils.h"
