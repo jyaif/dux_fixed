@@ -13,6 +13,9 @@ void TestFVec2() {
   // Test |Length|.
   assert(dux::FVec2(10, 10).SquareLength() == 200_fx);
   assert(dux::FVec2(3, 4).Length() == 5_fx);
+  constexpr dux::FInt small_value = dux::FInt::FromRawValue(1);
+  assert(dux::FVec2(small_value , 0_fx).Length() == small_value);
+  assert(dux::FVec2(dux::FInt::FromRawValue(3), dux::FInt::FromRawValue(4)).Length() == dux::FInt::FromRawValue(5));
 
   // Test |DotProduct|.
   assert(dux::FVec2(0, 0).DotProduct(dux::FVec2(0, 0)) == 0_fx);

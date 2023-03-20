@@ -15,7 +15,8 @@ To run tests locally (requires cmake):
 mkdir out
 cd out
 cmake ../test/
-make
+cmake --build . --parallel
+
 ./dux_fixed_test
 ```
 

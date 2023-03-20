@@ -19,6 +19,16 @@ FInt FVec2::Length() {
   // This works poorly with x_ and y_ that are very small:
   // If x_ is less than 0.015625 (sqrt(4096)/4096), x_*x_ results in 0, even
   // though sqrt(x_*x_) would not be 0.
+  if (x_ == 0_fx && y_ == 0_fx) {
+    return 0_fx;
+  }
+  constexpr dux::FInt kLimit = dux::FInt::FromFraction(1, 10);
+  if (x_ < kLimit && x_ > -kLimit && y_ < kLimit && y_ > -kLimit) {
+    const auto x64 = dux::FInt::FromRawValue(x_.raw_value_ * 64);
+    const auto y64 = dux::FInt::FromRawValue(y_.raw_value_ * 64);
+    const auto result16 = ((x64 * x64) + (y64 * y64)).Sqrt();
+    return dux::FInt::FromRawValue(result16.raw_value_ / 64);
+  }
   return ((x_ * x_) + (y_ * y_)).Sqrt();
 }
 
