@@ -146,10 +146,10 @@ uint32_t SearchValueInTanTable(int32_t value) {
 // Normalizes |angle| between 0 and 2*PI.
 void NormalizeAngle(dux::FInt& angle) {
   if (angle < 0_fx) {
-    angle = (-angle) % dux::FInt::kTwoPi;
-    angle = dux::FInt::kTwoPi - angle;
-  } else if (angle > dux::FInt::kTwoPi) {
-    angle %= dux::FInt::kTwoPi;
+    angle = (-angle) % dux::FIntTwoPi;
+    angle = dux::FIntTwoPi - angle;
+  } else if (angle > dux::FIntTwoPi) {
+    angle %= dux::FIntTwoPi;
   }
 }
 
@@ -160,58 +160,58 @@ namespace dux::trig {
 FInt Cos(FInt angle) {
   NormalizeAngle(angle);
 
-  if (angle < FInt::kPi) {
-    if (angle < FInt::kHalfPi) {
+  if (angle < FIntPi) {
+    if (angle < FIntHalfPi) {
       return FInt::FromRawValue(
-          kCosTable[((angle * 512) / FInt::kHalfPi).Round().Int32()]);
+          kCosTable[((angle * 512) / FIntHalfPi).Round().Int32()]);
     } else {
-      angle = FInt::kPi - angle;
+      angle = FIntPi - angle;
       return FInt::FromRawValue(
-          -kCosTable[((angle * 512) / FInt::kHalfPi).Round().Int32()]);
+          -kCosTable[((angle * 512) / FIntHalfPi).Round().Int32()]);
     }
   } else {
-    if (angle < FInt::kPi + FInt::kHalfPi) {
-      angle -= FInt::kPi;
+    if (angle < FIntPi + FIntHalfPi) {
+      angle -= FIntPi;
       return FInt::FromRawValue(
-          -kCosTable[((angle * 512) / FInt::kHalfPi).Round().Int32()]);
+          -kCosTable[((angle * 512) / FIntHalfPi).Round().Int32()]);
     } else {
-      angle = FInt::kTwoPi - angle;
+      angle = FIntTwoPi - angle;
       return FInt::FromRawValue(
-          kCosTable[((angle * 512) / FInt::kHalfPi).Round().Int32()]);
+          kCosTable[((angle * 512) / FIntHalfPi).Round().Int32()]);
     }
   }
 }
 
 FInt Sin(FInt angle) {
-  return Cos(FInt::kHalfPi - angle);
+  return Cos(FIntHalfPi - angle);
 }
 
 void Sincos(FInt angle, FInt& sin, FInt& cos) {
   NormalizeAngle(angle);
 
-  if (angle < FInt::kPi) {
-    if (angle < FInt::kHalfPi) {
-      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+  if (angle < FIntPi) {
+    if (angle < FIntHalfPi) {
+      uint32_t index = ((angle * 512) / FIntHalfPi).Round().Int32();
       assert(index <= 512);
       cos = FInt::FromRawValue(kCosTable[index]);
       sin = FInt::FromRawValue(kCosTable[512 - index]);
     } else {
-      angle = FInt::kPi - angle;
-      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+      angle = FIntPi - angle;
+      uint32_t index = ((angle * 512) / FIntHalfPi).Round().Int32();
       assert(index <= 512);
       cos = FInt::FromRawValue(-kCosTable[index]);
       sin = FInt::FromRawValue(kCosTable[512 - index]);
     }
   } else {
-    if (angle < FInt::kPi + FInt::kHalfPi) {
-      angle -= FInt::kPi;
-      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+    if (angle < FIntPi + FIntHalfPi) {
+      angle -= FIntPi;
+      uint32_t index = ((angle * 512) / FIntHalfPi).Round().Int32();
       assert(index <= 512);
       cos = FInt::FromRawValue(-kCosTable[index]);
       sin = FInt::FromRawValue(-kCosTable[512 - index]);
     } else {
-      angle = FInt::kTwoPi - angle;
-      uint32_t index = ((angle * 512) / FInt::kHalfPi).Round().Int32();
+      angle = FIntTwoPi - angle;
+      uint32_t index = ((angle * 512) / FIntHalfPi).Round().Int32();
       assert(index >= 0 && index <= 512);
       cos = FInt::FromRawValue(kCosTable[index]);
       sin = FInt::FromRawValue(-kCosTable[512 - index]);
@@ -222,29 +222,29 @@ void Sincos(FInt angle, FInt& sin, FInt& cos) {
 FInt Atan2(FInt y, FInt x) {
   if (x.raw_value_ == 0) {
     if (y.raw_value_ > 0) {
-      return FInt::kHalfPi;
+      return FIntHalfPi;
     } else {
-      return FInt::kPi + FInt::kHalfPi;
+      return FIntPi + FIntHalfPi;
     }
   }
   int32_t d = static_cast<uint32_t>((y / x).raw_value_);
   d = std::abs(d);
-  FInt angle = FInt::kHalfPi * FInt::FromInt(SearchValueInTanTable(d));
+  FInt angle = FIntHalfPi * FInt::FromInt(SearchValueInTanTable(d));
   angle >>= 9;
   if (y.raw_value_ > 0) {
     if (x.raw_value_ > 0) {
       return angle;
     } else {
-      return FInt::kPi - angle;
+      return FIntPi - angle;
     }
   } else {
     if (x.raw_value_ > 0) {
       if (angle == 0_fx) {
         return 0_fx;
       }
-      return FInt::kTwoPi - angle;
+      return FIntTwoPi - angle;
     } else {
-      return FInt::kPi + angle;
+      return FIntPi + angle;
     }
   }
 }

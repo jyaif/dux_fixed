@@ -20,7 +20,7 @@ FInt Atan2(FInt y, FInt x);
 
 // Returns an angle in radians from an angle in degrees.
 constexpr FInt ToRadian(FInt angle) {
-  return FInt((angle * FInt::kTwoPi) / 360);
+  return FInt((angle * FIntTwoPi) / 360);
 }
 
 // Generates and prints the lookup tables used in the implementation.

@@ -225,13 +225,6 @@ class FInt {
   static constexpr RawType kHighBitOfFraction = (1 << (kShift - 1));
   static constexpr RawType kIntegerMask = ~((1 << kShift) - 1);
   static constexpr int kHalfShift = kShift / 2;
-  static const FInt kMax;
-  static const FInt kMin;
-  static const FInt kZero;
-  static const FInt kHalfPi;
-  static const FInt kQuarterPi;
-  static const FInt kPi;
-  static const FInt kTwoPi;
 
  private:
   // Private. Use |FromRawValue| instead.
@@ -241,6 +234,13 @@ class FInt {
 // Returns x^y
 // Disclaimer: when `y` is not an integer, the precision is low.
 [[nodiscard]] FInt Pow(FInt x, FInt y);
+
+constexpr FInt FIntMax = FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::max());
+constexpr FInt FIntMin = FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::min());
+constexpr FInt FIntHalfPi = FInt::FromRawValue(6434LL);
+constexpr FInt FIntQuarterPi = FInt::FromRawValue(3217LL);
+constexpr FInt FIntPi = FInt::FromRawValue(12868LL);
+constexpr FInt FIntTwoPi = FInt::FromRawValue(25736LL);
 
 }  // namespace dux
 

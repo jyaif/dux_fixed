@@ -103,9 +103,9 @@ void TestFInt() {
   assert((-20_fx).IsSameSignAs(-10_fx));
   assert(!(-20_fx).IsSameSignAs(0_fx));
   assert(!(-20_fx).IsSameSignAs(10_fx));
-  assert(FInt::kMax.IsSameSignAs(10_fx));
-  assert(FInt::kMin.IsSameSignAs(-10_fx));
-  assert(!FInt::kMin.IsSameSignAs(FInt::kMax));
+  assert(FIntMax.IsSameSignAs(10_fx));
+  assert(FIntMin.IsSameSignAs(-10_fx));
+  assert(!FIntMin.IsSameSignAs(FIntMax));
 
   // Test |Sqrt|.
   assert((144_fx).Sqrt() == 12_fx);
@@ -114,7 +114,7 @@ void TestFInt() {
     AssertNearlyEqual(static_cast<double>(sqrtf(i)), FInt::FromInt(i).Sqrt());
   }
   // Test large values.
-  for (int64_t i = 797003437; i < FInt::kMax.raw_value_ - (2LL << 50);
+  for (int64_t i = 797003437; i < FIntMax.raw_value_ - (2LL << 50);
        i += 1LL << 50) {
     FInt v = FInt::FromRawValue(i);
     AssertNearlyEqual(
@@ -234,12 +234,11 @@ void TestFInt() {
   assert(a == 42_fx);
 
   // Test constants.
-  assert(FInt::kMax > 10000000_fx);
-  assert(FInt::kMin < -10000000_fx);
-  assert(FInt::kMax.raw_value_ + 1 == FInt::kMin.raw_value_);
-  assert(FInt::kZero == 0_fx);
-  AssertNearlyEqual(FInt::kQuarterPi.DoubleValue() * 2, FInt::kHalfPi);
-  AssertNearlyEqual(FInt::kHalfPi.DoubleValue() * 2, FInt::kPi);
-  AssertNearlyEqual(FInt::kPi.DoubleValue() * 2, FInt::kTwoPi);
-  AssertNearlyEqual(3.14159, FInt::kPi);
+  assert(FIntMax > 10000000_fx);
+  assert(FIntMin < -10000000_fx);
+  assert(FIntMax.raw_value_ + 1 == FIntMin.raw_value_);
+  AssertNearlyEqual(FIntQuarterPi.DoubleValue() * 2, FIntHalfPi);
+  AssertNearlyEqual(FIntHalfPi.DoubleValue() * 2, FIntPi);
+  AssertNearlyEqual(FIntPi.DoubleValue() * 2, FIntTwoPi);
+  AssertNearlyEqual(3.14159, FIntPi);
 }

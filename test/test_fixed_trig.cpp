@@ -37,7 +37,7 @@ void TestTrig() {
 
         // Verify that Atan2 returns angles between 0 and 2PI.
         assert(fixed_atan2_result >= 0_fx);
-        assert(fixed_atan2_result < dux::FInt::kTwoPi);
+        assert(fixed_atan2_result < dux::FIntTwoPi);
 
         double atan2_result = atan2(y, x);
 
@@ -51,7 +51,7 @@ void TestTrig() {
 
   // Test |ToRadian|.
   for (int i = -1000; i < 3000; i++) {
-    dux::FInt angle = (dux::FInt::kHalfPi * i) / 512;
+    dux::FInt angle = (dux::FIntHalfPi * i) / 512;
     AssertNearlyEqual(angle.DoubleValue() * M_PI / 180,
                       dux::trig::ToRadian(angle));
   }
