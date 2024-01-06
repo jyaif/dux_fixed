@@ -15,6 +15,8 @@ void TestFInt() {
   assert(FInt::FromInt(12).raw_value_ == 12 << FInt::kShift);
   assert(FInt::FromRawValue(12).raw_value_ == 12);
   assert(FInt::FromDouble(12) == (12_fx));
+  assert(FInt::FromFloat(13) == (13_fx));
+  assert(FInt::FromFloat(0.5) == (1_fx / 2_fx));
 
   // Test |_fx|.
   assert((12_fx) == FInt::FromInt(12));

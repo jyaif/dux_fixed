@@ -56,6 +56,12 @@ class FInt {
     return FInt::FromRawValue(raw_value);
   }
 
+  // Creates a fixed point number from a float.
+  [[nodiscard]] constexpr static FInt FromFloat(float value) {
+    RawType raw_value = static_cast<RawType>(value * (1 << FInt::kShift));
+    return FInt::FromRawValue(raw_value);
+  }
+
   // Returns the integral part of the fixed point number.
   [[nodiscard]] constexpr int32_t Int32() const {
     return static_cast<int32_t>(raw_value_ / (1 << kShift));
