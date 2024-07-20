@@ -42,7 +42,7 @@ void TestTrig() {
         double atan2_result = atan2(y, x);
 
         atan2_result += 2 * M_PI;
-        atan2_result = fmod(atan2_result, 2 * M_PI);
+        atan2_result = fmodf(atan2_result, 2 * M_PI);
 
         AssertNearlyEqual(atan2_result, fixed_atan2_result);
       }
