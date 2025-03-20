@@ -23,13 +23,10 @@ class FInt {
   }
 
   // Copy constructor.
-  constexpr FInt(FInt const& o) : raw_value_(o.raw_value_) {}
+  constexpr FInt(FInt const& o) = default;
 
   // Copy assignment operator.
-  constexpr FInt& operator=(FInt const& o) {
-    raw_value_ = o.raw_value_;
-    return *this;
-  }
+  constexpr FInt& operator=(FInt const& o) = default;
 
   // Creates a fixed point number from an integer.
   [[nodiscard]] constexpr static FInt FromInt(int32_t value) {
@@ -242,8 +239,10 @@ class FInt {
 // Disclaimer: when `y` is not an integer, the precision is low.
 [[nodiscard]] FInt Pow(FInt x, FInt y);
 
-constexpr FInt FIntMax = FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::max());
-constexpr FInt FIntMin = FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::min());
+constexpr FInt FIntMax =
+    FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::max());
+constexpr FInt FIntMin =
+    FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::min());
 constexpr FInt FIntHalfPi = FInt::FromRawValue(6434LL);
 constexpr FInt FIntQuarterPi = FInt::FromRawValue(3217LL);
 constexpr FInt FIntPi = FInt::FromRawValue(12868LL);
@@ -255,7 +254,7 @@ constexpr FInt FIntTwoPi = FInt::FromRawValue(25736LL);
 // `dux::FInt::FromInt(42)`
 // becomes
 // `42_fx`.
-constexpr dux::FInt operator"" _fx(unsigned long long int v) {
+constexpr dux::FInt operator""_fx(unsigned long long int v) {
   return dux::FInt::FromRawValue(v * (1 << dux::FInt::kShift));
 }
 
