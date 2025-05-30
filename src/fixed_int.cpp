@@ -1,7 +1,6 @@
 #include "fixed_int.h"
 
 #include <cassert>
-#include <limits>
 
 namespace dux {
 
@@ -62,10 +61,10 @@ FInt FInt::EuclideanDivisionRemainder(dux::FInt upper_bound) const {
 
 [[nodiscard]] FInt Pow(FInt const x, FInt const y) {
   if (y.raw_value_ == 0) {
-    return 1_fx; // x^0 = 1
+    return 1_fx;  // x^0 = 1
   }
   if (x.raw_value_ == 0) {
-    return 0_fx; // 0^y = 0  if y!=0
+    return 0_fx;  // 0^y = 0  if y!=0
   }
 
   bool y_is_negative = y < 0_fx;
@@ -99,6 +98,11 @@ FInt FInt::EuclideanDivisionRemainder(dux::FInt upper_bound) const {
     return 1_fx / result;
   }
   return result;
+}
+
+[[nodiscard]] std::string FInt::ToString() const {
+  return (raw_value_ < 0 ? "-" : "") + std::to_string(Int64()) + "." +
+         std::to_string(Frac().raw_value_);
 }
 
 }  // namespace dux

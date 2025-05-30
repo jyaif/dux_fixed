@@ -17,9 +17,9 @@ class FInt {
 
   // Initializes to 0.
   constexpr FInt() : raw_value_(0) {
-    static_assert(kHalfShift * 2 == kShift, "");
-    static_assert(kFractionMask == (1 << kShift) - 1, "");
-    static_assert(kFractionMask == ~kIntegerMask, "");
+    static_assert(kHalfShift * 2 == kShift);
+    static_assert(kFractionMask == (1 << kShift) - 1);
+    static_assert(kFractionMask == ~kIntegerMask);
   }
 
   // Copy constructor.
@@ -102,9 +102,8 @@ class FInt {
     bool high_bit_of_fraction_is_one = (raw_value_ & kHighBitOfFraction) > 0;
     if (high_bit_of_fraction_is_one) {
       return Ceil();
-    } else {
-      return Floor();
     }
+    return Floor();
   }
 
   // Returns the fractional part.
@@ -125,6 +124,11 @@ class FInt {
   // Returns a value that is always positive.
   // |upper_bound| must be greater than 0.
   [[nodiscard]] FInt EuclideanDivisionRemainder(dux::FInt upper_bound) const;
+
+  // Returns the string representation of a fixedpoint value
+  // The returned string is formatted like a fixedpoint literal (-0.2048), not a
+  // float (-0.5)
+  [[nodiscard]] std::string ToString() const;
 
   constexpr FInt operator+(const FInt& o) const {
     return FInt::FromRawValue(raw_value_ + o.raw_value_);
@@ -201,25 +205,25 @@ class FInt {
 
   template <typename T>
   constexpr FInt operator*(const T v) const {
-    static_assert(std::is_integral<T>::value, "Integer required.");
+    static_assert(std::is_integral_v<T>, "Integer required.");
     return dux::FInt::FromRawValue(raw_value_ * static_cast<RawType>(v));
   }
 
   template <typename T>
   constexpr FInt operator/(const T v) const {
-    static_assert(std::is_integral<T>::value, "Integer required.");
+    static_assert(std::is_integral_v<T>, "Integer required.");
     return dux::FInt::FromRawValue(raw_value_ / static_cast<RawType>(v));
   }
 
   template <typename T>
   constexpr void operator*=(const T v) {
-    static_assert(std::is_integral<T>::value, "Integer required.");
+    static_assert(std::is_integral_v<T>, "Integer required.");
     raw_value_ *= v;
   }
 
   template <typename T>
   constexpr void operator/=(const T v) {
-    static_assert(std::is_integral<T>::value, "Integer required.");
+    static_assert(std::is_integral_v<T>, "Integer required.");
     raw_value_ /= v;
   }
 
@@ -232,7 +236,7 @@ class FInt {
 
  private:
   // Private. Use |FromRawValue| instead.
-  inline constexpr explicit FInt(RawType raw_value) : raw_value_(raw_value) {}
+  constexpr explicit FInt(RawType raw_value) : raw_value_(raw_value) {}
 };
 
 // Returns x^y
