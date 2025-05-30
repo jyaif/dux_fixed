@@ -108,7 +108,7 @@ class FInt {
 
   // Returns the fractional part.
   [[nodiscard]] constexpr FInt Frac() const {
-    return FInt::FromRawValue(raw_value_ & kFractionMask);
+    return FInt::FromRawValue(Abs().raw_value_ & kFractionMask);
   }
 
   // Returns whether |other| is of the same sign as |this|.
