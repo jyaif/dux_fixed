@@ -101,8 +101,8 @@ FInt FInt::EuclideanDivisionRemainder(dux::FInt upper_bound) const {
 }
 
 [[nodiscard]] std::string FInt::ToString() const {
-  return (raw_value_ < 0 ? "-" : "") + std::to_string(Int64()) + "." +
-         std::to_string(Frac().raw_value_);
+  return (Int64() == 0 && raw_value_ < 0 ? "-" : "") + std::to_string(Int64()) +
+         "." + std::to_string(Frac().raw_value_);
 }
 
 }  // namespace dux
