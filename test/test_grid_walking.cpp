@@ -146,15 +146,16 @@ void TestGridWalking() {
   VerifyWalkAllDirections({r - 1, 0}, {r - 1, 0});
   VerifyWalkAllDirections({r, 0}, {r, 0});
   VerifyWalkAllDirections({10 * r, 5 * r}, {10 * r, 5 * r});
-  VerifyWalkAllDirections({10 * r - 1, 5 * r - 1}, {10 * r - 1, 5 * r - 1});
+  VerifyWalkAllDirections({(10 * r) - 1, (5 * r) - 1},
+                          {(10 * r) - 1, (5 * r) - 1});
 
   // Axis-aligned lines
   VerifyWalkAllDirections({0, 0}, {r, 0});
   VerifyWalkAllDirections({0, 0}, {2 * r, 0});
-  VerifyWalkAllDirections({0, 0}, {2 * r - 1, 0});
+  VerifyWalkAllDirections({0, 0}, {(2 * r) - 1, 0});
   VerifyWalkAllDirections({1, 1}, {3 * r, r - 1});
   VerifyWalkAllDirections({10 * r, r - 1}, {12 * r, 1});
-  VerifyWalkAllDirections({10 * r, 5 * r - 1}, {12 * r, 4 * r + 1});
+  VerifyWalkAllDirections({10 * r, (5 * r) - 1}, {12 * r, (4 * r) + 1});
 
   dux::FInt offset = 10_fx;
 
@@ -162,7 +163,7 @@ void TestGridWalking() {
     for (int y = 1; y < 20; y++) {
       if (x != y) {
         dux::FVec2 start = RandFVec2(0_fx, 64_fx, 0_fx, 64_fx);
-        VerifyWalkAllDirections(start, {x * r + 20, y * r + 31});
+        VerifyWalkAllDirections(start, {(x * r) + 20, (y * r) + 31});
       }
     }
   }

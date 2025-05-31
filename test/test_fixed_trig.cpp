@@ -2,10 +2,7 @@
 
 #include <cassert>
 #include <cmath>
-#include <cstdio>
-#include <cstdlib>
 
-#include "dux_fixed.h"
 #include "utils.h"
 
 using namespace dux;

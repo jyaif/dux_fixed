@@ -9,10 +9,10 @@ void AssertNearlyEqual(double expected,
                        dux::FInt actual,
                        double threshold = 0.02);
 
-dux::FVec2 RandFVec2(dux::FInt const minX,
-                     dux::FInt const maxX,
-                     dux::FInt const minY,
-                     dux::FInt const maxY);
+dux::FVec2 RandFVec2(dux::FInt minX,
+                     dux::FInt maxX,
+                     dux::FInt minY,
+                     dux::FInt maxY);
 
 }  // namespace dux_test_utils
 

@@ -2,7 +2,6 @@
 
 #include <cmath>
 
-#include "dux_fixed.h"
 #include "utils.h"
 
 using namespace dux;
@@ -14,8 +13,9 @@ void TestFVec2() {
   assert(dux::FVec2(10, 10).SquareLength() == 200_fx);
   assert(dux::FVec2(3, 4).Length() == 5_fx);
   constexpr dux::FInt small_value = dux::FInt::FromRawValue(1);
-  assert(dux::FVec2(small_value , 0_fx).Length() == small_value);
-  assert(dux::FVec2(dux::FInt::FromRawValue(3), dux::FInt::FromRawValue(4)).Length() == dux::FInt::FromRawValue(5));
+  assert(dux::FVec2(small_value, 0_fx).Length() == small_value);
+  assert(dux::FVec2(dux::FInt::FromRawValue(3), dux::FInt::FromRawValue(4))
+             .Length() == dux::FInt::FromRawValue(5));
 
   // Test |DotProduct|.
   assert(dux::FVec2(0, 0).DotProduct(dux::FVec2(0, 0)) == 0_fx);
@@ -60,38 +60,37 @@ void TestFVec2() {
   // Initialise a vector with 30 degrees (PI/6), and rotate it.
   for (dux::FInt rotation; rotation < dux::FIntTwoPi;
        rotation += (dux::FIntTwoPi * dux::FInt::FromFraction(1, 64))) {
-    FVec2 v =
-        FVec2::FromAngle(FIntPi * dux::FInt::FromFraction(1, 6), 10_fx);
+    FVec2 v = FVec2::FromAngle(FIntPi * dux::FInt::FromFraction(1, 6), 10_fx);
     v.Rotate(rotation);
-    AssertNearlyEqual(cos(M_PI / 6 + rotation.FloatValue()) * 10, v.x_, 0.04);
-    AssertNearlyEqual(sin(M_PI / 6 + rotation.FloatValue()) * 10, v.y_, 0.04);
+    AssertNearlyEqual(cos((M_PI / 6) + rotation.FloatValue()) * 10, v.x_, 0.04);
+    AssertNearlyEqual(sin((M_PI / 6) + rotation.FloatValue()) * 10, v.y_, 0.04);
   }
 
   // Test comparisons.
   // ==
   assert(dux::FVec2(1, 2) == dux::FVec2(1, 2));
-  assert(dux::FVec2(1, 2) == dux::FVec2(1, 3) == false);
+  assert(!(dux::FVec2(1, 2) == dux::FVec2(1, 3)));
   // !=
   assert(dux::FVec2(1, 2) != dux::FVec2(2, 3));
   assert(dux::FVec2(1, 2) != dux::FVec2(1, 3));
-  assert(dux::FVec2(1, 2) != dux::FVec2(1, 2) == false);
+  assert(!(dux::FVec2(1, 2) != dux::FVec2(1, 2)));
   // <
   assert(dux::FVec2(0, 0) < dux::FVec2(1, 1));
-  assert(dux::FVec2(0, 0) < dux::FVec2(0, 1) == false);
-  assert(dux::FVec2(1, 1) < dux::FVec2(0, 0) == false);
+  assert(!(dux::FVec2(0, 0) < dux::FVec2(0, 1)));
+  assert(!(dux::FVec2(1, 1) < dux::FVec2(0, 0)));
   // <=
   assert(dux::FVec2(0, 0) <= dux::FVec2(1, 1));
   assert(dux::FVec2(0, 0) <= dux::FVec2(0, 1));
   assert(dux::FVec2(0, 0) <= dux::FVec2(0, 0));
-  assert(dux::FVec2(1, 1) <= dux::FVec2(0, 0) == false);
-  assert(dux::FVec2(1, 0) <= dux::FVec2(0, 0) == false);
+  assert(!(dux::FVec2(1, 1) <= dux::FVec2(0, 0)));
+  assert(!(dux::FVec2(1, 0) <= dux::FVec2(0, 0)));
   // >
-  assert(dux::FVec2(0, 0) > dux::FVec2(1, 1) == false);
-  assert(dux::FVec2(0, 0) > dux::FVec2(0, 1) == false);
+  assert(!(dux::FVec2(0, 0) > dux::FVec2(1, 1)));
+  assert(!(dux::FVec2(0, 0) > dux::FVec2(0, 1)));
   assert(dux::FVec2(1, 1) > dux::FVec2(0, 0));
   // >=
-  assert(dux::FVec2(0, 0) >= dux::FVec2(1, 1) == false);
-  assert(dux::FVec2(0, 0) >= dux::FVec2(0, 1) == false);
+  assert(!(dux::FVec2(0, 0) >= dux::FVec2(1, 1)));
+  assert(!(dux::FVec2(0, 0) >= dux::FVec2(0, 1)));
   assert(dux::FVec2(0, 0) >= dux::FVec2(0, 0));
   assert(dux::FVec2(1, 1) >= dux::FVec2(0, 0));
   assert(dux::FVec2(1, 0) >= dux::FVec2(0, 0));

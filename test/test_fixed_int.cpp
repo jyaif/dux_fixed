@@ -3,7 +3,7 @@
 #include <cassert>
 #include <cmath>
 
-#include "dux_fixed.h"
+#include "fixed_int.h"
 #include "utils.h"
 
 using namespace dux;
@@ -38,8 +38,8 @@ void TestFInt() {
   assert(FInt::FromFraction(1, 3).DoubleValue() < 0.334);
 
   // Test |FloatValue|.
-  assert(FInt::FromFraction(1, 3).FloatValue() > 0.333);
-  assert(FInt::FromFraction(1, 3).FloatValue() < 0.334);
+  assert(FInt::FromFraction(1, 3).FloatValue() > 0.333f);
+  assert(FInt::FromFraction(1, 3).FloatValue() < 0.334f);
 
   // Test |Abs|.
   assert((0_fx).Abs() == 0_fx);
@@ -95,8 +95,10 @@ void TestFInt() {
   assert(FInt::FromFraction(-101, 2).Frac() == FInt::FromFraction(1, 2));
   assert(FInt::FromFraction(1, 3).Frac() == FInt::FromFraction(1, 3));
   assert(FInt::FromFraction(4, 3).Frac() == FInt::FromFraction(1, 3));
-  AssertNearlyEqual(2.0 / 3, FInt::FromFraction(-1, 3).Frac());
-  AssertNearlyEqual(2.0 / 3, FInt::FromFraction(-4, 3).Frac());
+  AssertNearlyEqual(1.0 / 3, FInt::FromFraction(-1, 3).Frac());
+  AssertNearlyEqual(1.0 / 3, FInt::FromFraction(-4, 3).Frac());
+  AssertNearlyEqual(2.0 / 3, 1_fx - FInt::FromFraction(-1, 3).Frac());
+  AssertNearlyEqual(2.0 / 3, 1_fx - FInt::FromFraction(-4, 3).Frac());
 
   // Test same sign.
   assert((20_fx).IsSameSignAs(10_fx));
@@ -195,7 +197,7 @@ void TestFInt() {
   assert((-106_fx).EuclideanDivisionRemainder(10_fx) == 4_fx);
 
   // Test x^y with integers powers
-  for (float x = -50; x < 50; x+=0.1) {
+  for (float x = -50; x < 50; x += 0.1) {
     for (float y = -3; y < 4; y += 1) {
       if (x > -0.1 && x < 0.1) {
         // small numbers to a negative power don't work well, e.g.
@@ -235,10 +237,36 @@ void TestFInt() {
   a /= -3_fx;
   assert(a == 42_fx);
 
+  // Test string representation
+  assert(FInt::FromInt(-277).ToString() == "-277.0");
+  assert(FInt::FromInt(255).ToString() == "255.0");
+  assert(FInt::FromInt(0).ToString() == "0.0");
+  assert(FInt::FromInt(-0).ToString() == "0.0");
+  assert(FInt::FromFloat(0.5f).ToString() == "0.2048");
+  assert(FInt::FromFloat(-0.5f).ToString() == "-0.2048");
+  assert(FInt::FromRawValue(2048).ToString() == "0.2048");
+  assert(FInt::FromFraction(-1, 3).ToString() == "-0.1365");
+  assert((1_fx / 3_fx).ToString() == "0.1365");
+  assert(FInt::FromDouble(0.25).ToString() == "0.1024");
+  assert((1_fx / -5).ToString() == "-0.819");
+  assert((-1_fx / 6_fx).ToString() == "-0.682");
+  assert((1_fx / 8).ToString() == "0.512");
+  assert((FInt::FromRawValue(-4096) / 8).ToString() == "-0.512");
+  assert(FInt::FromFloat(18.0f / 7).ToString() == "2.2340");
+  assert((5_fx / -3_fx).ToString() == "-1.2730");
+  assert((-1999_fx / 3).ToString() == "-666.1365");
+  assert(Sin(FIntPi / 3_fx).ToString() == "0.3545");
+  assert(Cos(4_fx * FIntPi / 3_fx).ToString() == "-0.2051");
+  assert(FIntMax.ToString() == "2251799813685247.4095");
+  assert(FIntMin.ToString() == "-2251799813685248.0");
+
   // Test constants.
   assert(FIntMax > 10000000_fx);
   assert(FIntMin < -10000000_fx);
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winteger-overflow"
   assert(FIntMax.raw_value_ + 1 == FIntMin.raw_value_);
+#pragma clang diagnostic pop
   AssertNearlyEqual(FIntQuarterPi.DoubleValue() * 2, FIntHalfPi);
   AssertNearlyEqual(FIntHalfPi.DoubleValue() * 2, FIntPi);
   AssertNearlyEqual(FIntPi.DoubleValue() * 2, FIntTwoPi);

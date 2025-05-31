@@ -2,6 +2,9 @@ cmake_minimum_required (VERSION 3.6)
 project(dux_fixed_project)
 
 add_compile_options(-std=c++17 -Werror)
+if (WIN32)
+  add_compile_options("-D _USE_MATH_DEFINES")
+endif()
 
 add_subdirectory(../ dux_fixed_lib_build_dir)
 
