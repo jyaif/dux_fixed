@@ -126,6 +126,18 @@ void TestFInt() {
         v.Sqrt(), 2.01);
   }
 
+  // Test |Exp|.
+  // Test 800 values in the [0, 8] range.
+  for (int i = 0; i < 800; i++) {
+    double expected = expf((float)i / 100.0f);
+    AssertNearlyEqual(expected, Exp(dux::FInt::FromFraction(i, 100)), 1.1);
+  }
+  // Test 800 vaues in the [-8, 0] range
+  for (int i = -800; i < 0; i++) {
+    double expected = expf((float)i / 100.0f);
+    AssertNearlyEqual(expected, Exp(dux::FInt::FromFraction(i, 100)), 0.001);
+  }
+
   // Test ==, !=, < operators.
   assert(434_fx == 434_fx);
   assert(-1_fx != 1_fx);

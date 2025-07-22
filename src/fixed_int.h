@@ -10,7 +10,7 @@
 
 namespace dux {
 
-// Class encapsulating 52-12 fixed point numbers.
+// Class encapsulating Q51.12 fixed point numbers.
 class FInt {
  public:
   using RawType = int64_t;
@@ -242,6 +242,9 @@ class FInt {
 // Returns x^y
 // Disclaimer: when `y` is not an integer, the precision is low.
 [[nodiscard]] FInt Pow(FInt x, FInt y);
+
+// Returns e^x, the base-e exponential of x.
+[[nodiscard]] FInt Exp(FInt x);
 
 constexpr FInt FIntMax =
     FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::max());

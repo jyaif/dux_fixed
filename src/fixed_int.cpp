@@ -100,6 +100,69 @@ FInt FInt::EuclideanDivisionRemainder(dux::FInt upper_bound) const {
   return result;
 }
 
+// Fixed-point constants for Exp().
+// ln(2) in Q51.12 format is 0.693147 * 4096 ~= 2839
+static constexpr FInt kLn2 = FInt::FromRawValue(2839LL);
+// 1/ln(2) in Q51.12 format is 1.442695 * 4096 ~= 5909
+static constexpr FInt kInvLn2 = FInt::FromRawValue(5909LL);
+
+[[nodiscard]] FInt Exp(FInt x) {
+  if (x == 0_fx) {
+    return 1_fx;
+  }
+
+  // Clamp input to prevent overflow. The largest value for FInt is ~2^51.
+  // ln(2^51) = 51 * ln(2) ~= 35.3. We clamp around this value.
+  if (x > 35_fx) {
+    return FIntMax;
+  }
+  // For large negative x, e^x underflows to 0.
+  if (x < -35_fx) {
+    return 0_fx;
+  }
+
+  // Range reduction: e^x = 2^k * e^(x'), where x' = x - k*ln(2) and |x'| <=
+  // ln(2)/2. First, find k = round(x / ln(2)) = round(x * (1/ln(2))).
+  FInt k_fint = x * kInvLn2;
+  int32_t k = k_fint.Round().Int32();
+
+  // Then, find x' = x - k * ln(2).
+  FInt x_prime = x - (FInt::FromInt(k) * kLn2);
+
+  // Calculate e^(x') using Taylor series: 1 + x' + (x')^2/2! + (x')^3/3! ...
+  FInt sum = 1_fx + x_prime;
+  FInt term = x_prime;
+
+  // With range reduction, the series converges quickly. 10-12 terms are ample.
+  for (int i = 2; i < 12; ++i) {
+    term = (term * x_prime) / i;
+    // Once the term is too small to contribute, we can stop.
+    if (term.raw_value_ == 0) {
+      break;
+    }
+    sum += term;
+  }
+
+  // Final result is sum * 2^k. This is a bit shift on the raw value.
+  if (k > 0) {
+    // Prevent overflow from the shift. A left shift by ~50 is the max.
+    if (k >= 50) {
+      return FIntMax;
+    }
+    return FInt::FromRawValue(sum.raw_value_ << k);
+  }
+  if (k < 0) {
+    int rshift = -k;
+    // Prevent shifting by more than the bit width.
+    if (rshift >= 64) {
+      return 0_fx;
+    }
+    return FInt::FromRawValue(sum.raw_value_ >> rshift);
+  }
+  // if k == 0
+  return sum;
+}
+
 [[nodiscard]] std::string FInt::ToString() const {
   return (Int64() == 0 && raw_value_ < 0 ? "-" : "") + std::to_string(Int64()) +
          "." + std::to_string(Frac().raw_value_);
