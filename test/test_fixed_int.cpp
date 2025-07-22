@@ -138,6 +138,13 @@ void TestFInt() {
     AssertNearlyEqual(expected, Exp(dux::FInt::FromFraction(i, 100)), 0.001);
   }
 
+  // Test |Ln|.
+  // Test 9990 values in the [1, 1000] range.
+  for (int i = 10; i < 10000; i++) {
+    double expected = logf((float)i / 10.0f);
+    AssertNearlyEqual(expected, Ln(dux::FInt::FromFraction(i, 10)), 0.01);
+  }
+
   // Test ==, !=, < operators.
   assert(434_fx == 434_fx);
   assert(-1_fx != 1_fx);

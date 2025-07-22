@@ -246,6 +246,10 @@ class FInt {
 // Returns e^x, the base-e exponential of x.
 [[nodiscard]] FInt Exp(FInt x);
 
+// Returns the natural logarithm of x.
+// Asserts if x <= 0.
+[[nodiscard]] FInt Ln(FInt x);
+
 constexpr FInt FIntMax =
     FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::max());
 constexpr FInt FIntMin =

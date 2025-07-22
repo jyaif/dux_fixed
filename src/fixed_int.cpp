@@ -163,6 +163,43 @@ static constexpr FInt kInvLn2 = FInt::FromRawValue(5909LL);
   return sum;
 }
 
+[[nodiscard]] FInt Ln(FInt x) {
+  assert(x > 0_fx && "Logarithm argument must be positive");
+  if (x <= 0_fx) {
+    return FIntMin;  // Return error value
+  }
+
+  // 1) Extract integer power of 2: x = y * 2^k, with y in [1,2).
+  int32_t k = 0;
+  FInt y = x;
+  // bring y into [1,2)
+  while (y > 2_fx) {
+    y.raw_value_ >>= 1;
+    ++k;
+  }
+  while (y < 1_fx) {
+    y.raw_value_ <<= 1;
+    --k;
+  }
+
+  // 2) Compute ln(y) via the atanh-series:
+  //    z = (y - 1) / (y + 1)
+  //    ln(y) = 2 * ( z + z^3/3 + z^5/5 + … )
+  FInt z = (y - 1_fx) / (y + 1_fx);
+  FInt z2 = z * z;
+  FInt term = z;
+  FInt sum = term;
+  // sum odd terms
+  for (int n = 3; n <= 11; n += 2) {
+    term = term * z2;
+    sum += (term / FInt::FromInt(n));
+  }
+  FInt ln_y = sum * 2_fx;
+
+  // 3) Reassemble: ln(x) = k*ln(2) + ln(y)
+  return FInt::FromInt(k) * kLn2 + ln_y;
+}
+
 [[nodiscard]] std::string FInt::ToString() const {
   return (Int64() == 0 && raw_value_ < 0 ? "-" : "") + std::to_string(Int64()) +
          "." + std::to_string(Frac().raw_value_);
