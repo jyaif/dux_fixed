@@ -205,6 +205,16 @@ static constexpr FInt kInvLn2 = FInt::FromRawValue(5909LL);
          "." + std::to_string(Frac().raw_value_);
 }
 
+FInt InterpolateAngle(FInt angle_start, FInt angle_end, FInt percentage) {
+  FInt d_angle = angle_end - angle_start;
+  if (d_angle >= -FIntPi && d_angle <= FIntPi) {
+    return angle_start + d_angle * percentage;
+  }
+  d_angle = (angle_end - angle_start) % FIntTau;
+  FInt short_angle = ((2_fx * d_angle) % FIntTau) - d_angle;
+  return angle_start + short_angle * percentage;
+}
+
 }  // namespace dux
 
 std::ostream& operator<<(std::ostream& stream, const dux::FInt& fint) {

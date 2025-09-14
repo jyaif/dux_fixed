@@ -254,11 +254,23 @@ constexpr FInt FIntMax =
     FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::max());
 constexpr FInt FIntMin =
     FInt::FromRawValue(std::numeric_limits<dux::FInt::RawType>::min());
+
+constexpr FInt FIntTau = FInt::FromRawValue(25736LL);
+constexpr FInt FIntTau2 = FInt::FromRawValue(12868LL);
+constexpr FInt FIntTau4 = FInt::FromRawValue(6434LL);
+constexpr FInt FIntTau8 = FInt::FromRawValue(3217LL);
+
+// Deprecated constants
 constexpr FInt FIntHalfPi = FInt::FromRawValue(6434LL);
 constexpr FInt FIntQuarterPi = FInt::FromRawValue(3217LL);
 constexpr FInt FIntPi = FInt::FromRawValue(12868LL);
 constexpr FInt FIntTwoPi = FInt::FromRawValue(25736LL);
 
+// Returns the angle interpolation between `angle_start` and `angle_end`.
+// `percentage` should be a number between 0 and 1.
+dux::FInt InterpolateAngle(dux::FInt angle_start,
+                           dux::FInt angle_end,
+                           dux::FInt percentage);
 }  // namespace dux
 
 // A shorthand for |dux::FInt::FromInt|:

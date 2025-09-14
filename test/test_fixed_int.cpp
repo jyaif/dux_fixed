@@ -279,6 +279,30 @@ void TestFInt() {
   assert(FIntMax.ToString() == "2251799813685247.4095");
   assert(FIntMin.ToString() == "-2251799813685248.0");
 
+  // Test angle interpolation
+  assert(InterpolateAngle(0_fx, 0_fx, 0_fx) == 0_fx);
+  assert(InterpolateAngle(0_fx, 0_fx, 1_fx) == 0_fx);
+  assert(InterpolateAngle(2_fx, 2_fx, 0_fx) == 2_fx);
+  assert(InterpolateAngle(2_fx, 2_fx, 1_fx) == 2_fx);
+  assert(InterpolateAngle(6_fx, 6_fx, 0_fx) == 6_fx);
+  assert(InterpolateAngle(6_fx, 6_fx, 1_fx) == 6_fx);
+  assert(InterpolateAngle(0_fx, 2_fx, 0_fx) == 0_fx);
+  assert(InterpolateAngle(0_fx, 2_fx, 1_fx / 2_fx) == 1_fx);
+  assert(InterpolateAngle(0_fx, 2_fx, 1_fx) == 2_fx);
+  assert(InterpolateAngle(1_fx, -1_fx, 0_fx) == 1_fx);
+  assert(InterpolateAngle(1_fx, -1_fx, 1_fx) == -1_fx);
+  assert(InterpolateAngle(1_fx, -1_fx, 1_fx / 2_fx) == 0_fx);
+  // interpolate between 1rad and -3rad
+  assert(InterpolateAngle(1_fx, -3_fx, 0_fx) == 1_fx);
+  assert(InterpolateAngle(1_fx, -3_fx, 1_fx) == FIntTau - 3_fx);
+  assert(InterpolateAngle(1_fx, -3_fx, 1_fx / 2_fx) ==
+         (1_fx + (FIntTau - 3_fx - 1_fx) / 2_fx));
+  // interpolate between 0.25rad and .75rad
+  assert(InterpolateAngle(1_fx / 4_fx, -3_fx / 4_fx, 0_fx) == 1_fx / 4_fx);
+  assert(InterpolateAngle(1_fx / 4_fx, -3_fx / 4_fx, 1_fx) == -(3_fx / 4_fx));
+  assert(InterpolateAngle(1_fx / 4_fx, -3_fx / 4_fx, 1_fx / 2_fx) ==
+         (-1_fx / 4_fx));
+
   // Test constants.
   assert(FIntMax > 10000000_fx);
   assert(FIntMin < -10000000_fx);
