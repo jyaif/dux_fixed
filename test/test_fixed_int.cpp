@@ -76,12 +76,17 @@ void TestFInt() {
   assert((0_fx).Round() == 0_fx);
   // Positive values.
   assert(FInt::FromDouble(0.45).Round() == 0_fx);
+  assert(FInt::FromDouble(0.5).Round() == 1_fx);
   assert(FInt::FromDouble(0.55).Round() == 1_fx);
   assert(FInt::FromDouble(10.45).Round() == 10_fx);
   assert(FInt::FromDouble(10.55).Round() == 11_fx);
   // Negative values.
   assert(FInt::FromDouble(-0.45).Round() == 0_fx);
+  assert(FInt::FromDouble(-0.5).Round() == -1_fx);
   assert(FInt::FromDouble(-0.55).Round() == -1_fx);
+  assert(FInt::FromDouble(-3.2).Round() == -3_fx);
+  assert(FInt::FromDouble(-3.5).Round() == -4_fx);
+  assert(FInt::FromDouble(-3.7).Round() == -4_fx);
   assert(FInt::FromDouble(-10.45).Round() == -10_fx);
   assert(FInt::FromDouble(-10.55).Round() == -11_fx);
 
@@ -306,10 +311,17 @@ void TestFInt() {
   // Test constants.
   assert(FIntMax > 10000000_fx);
   assert(FIntMin < -10000000_fx);
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Woverflow"
+#endif
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Winteger-overflow"
   assert(FIntMax.raw_value_ + 1 == FIntMin.raw_value_);
 #pragma clang diagnostic pop
+#if defined(__GNUC__) && !defined(__clang__)
+#pragma GCC diagnostic pop
+#endif
   AssertNearlyEqual(FIntQuarterPi.DoubleValue() * 2, FIntHalfPi);
   AssertNearlyEqual(FIntHalfPi.DoubleValue() * 2, FIntPi);
   AssertNearlyEqual(FIntPi.DoubleValue() * 2, FIntTwoPi);

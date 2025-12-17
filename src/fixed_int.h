@@ -99,11 +99,12 @@ class FInt {
   // Returns the integral value nearest by rounding half-way cases away from
   // zero.
   [[nodiscard]] constexpr FInt Round() const {
-    bool high_bit_of_fraction_is_one = (raw_value_ & kHighBitOfFraction) > 0;
-    if (high_bit_of_fraction_is_one) {
-      return Ceil();
+    // For positive numbers, this is floor(x + 0.5).
+    // For negative numbers, this is ceil(x - 0.5).
+    if (raw_value_ >= 0) {
+      return FInt::FromRawValue(raw_value_ + kHighBitOfFraction).Floor();
     }
-    return Floor();
+    return FInt::FromRawValue(raw_value_ - kHighBitOfFraction).Ceil();
   }
 
   // Returns the fractional part.
