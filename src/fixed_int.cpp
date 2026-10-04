@@ -2,6 +2,25 @@
 
 #include <cassert>
 
+namespace {
+
+// Returns the number of bits needed to represent |value|, which must be
+// strictly positive.
+int BitCount(int64_t value) {
+#if defined(__GNUC__) || defined(__clang__)
+  return 64 - __builtin_clzll(static_cast<unsigned long long>(value));
+#else
+  int bit_count = 0;
+  while (value != 0) {
+    value >>= 1;
+    bit_count++;
+  }
+  return bit_count;
+#endif
+}
+
+}  // namespace
+
 namespace dux {
 
 FInt FInt::Sqrt() const {
@@ -10,11 +29,16 @@ FInt FInt::Sqrt() const {
     return FInt(0);
   }
 
+  // Newton's method. Any initial value greater than or equal to the square
+  // root converges to the same result, so start from the smallest power of
+  // two that is known to be: 2^ceil(bit_count/2).
+  const int initial_shift = (BitCount(raw_value_) + 1) / 2;
+
   FInt result;
   // Specialisation for when the value fits in a int32_t.
   if (raw_value_ < 0x7FFFFFFF) {
     int32_t value = static_cast<int32_t>(raw_value_);
-    int32_t n = (value >> 1) + 1;
+    int32_t n = int32_t{1} << initial_shift;
     int32_t n1 = (n + (value / n)) >> 1;
     while (n1 < n) {
       n = n1;
@@ -23,7 +47,7 @@ FInt FInt::Sqrt() const {
     RawType square_root_of_raw_value = n1;
     result = FInt::FromRawValue(square_root_of_raw_value << kHalfShift);
   } else {
-    RawType n = (raw_value_ >> 1) + 1;
+    RawType n = RawType{1} << initial_shift;
     RawType n1 = (n + (raw_value_ / n)) >> 1;
     while (n1 < n) {
       n = n1;

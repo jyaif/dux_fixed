@@ -117,30 +117,19 @@ std::array<int32_t, 512> kTanTable = {
      166852, 190697, 222489, 266996, 333755, 445017, 667538, 1335099},
 };
 
-uint32_t SearchValueInTanTable(int32_t value) {
-  uint32_t lowerBound = 0;
-  uint32_t higherBound = kTanTable.size() - 1;
-  assert(value >= 0);
-  if (value <= kTanTable[lowerBound]) {
-    return lowerBound;
+// Returns the index of the largest value of |kTanTable| that is less than or
+// equal to |value|.
+uint32_t SearchValueInTanTable(uint32_t value) {
+  static_assert(kTanTable.size() == 512);
+  // Branchless binary search: the comparisons are unpredictable, so branching
+  // on them is slow.
+  // |kTanTable[0]| is 0, so it is always less than or equal to |value|.
+  uint32_t index = 0;
+  for (uint32_t step = 256; step != 0; step >>= 1) {
+    index +=
+        (static_cast<uint32_t>(kTanTable[index + step]) <= value) ? step : 0;
   }
-  if (value >= kTanTable[higherBound]) {
-    return higherBound;
-  }
-  while (higherBound - lowerBound > 1) {
-    uint32_t index = (higherBound + lowerBound) / 2;
-    int32_t valueInTheCenter = kTanTable[index];
-    if (valueInTheCenter > value) {
-      higherBound = index;
-    } else {
-      if (valueInTheCenter < value) {
-        lowerBound = index;
-      } else {
-        return index;
-      }
-    }
-  }
-  return lowerBound;
+  return index;
 }
 
 // Normalizes |angle| between 0 and 2*PI.
@@ -227,8 +216,12 @@ FInt Atan2(FInt y, FInt x) {
       return FIntPi + FIntHalfPi;
     }
   }
-  int32_t d = static_cast<uint32_t>((y / x).raw_value_);
-  d = std::abs(d);
+  // The quotient is truncated to 32 bits. Its absolute value is computed as an
+  // unsigned integer, because the absolute value of the smallest int32_t does
+  // not fit in a int32_t.
+  int32_t quotient = static_cast<uint32_t>((y / x).raw_value_);
+  uint32_t d = quotient < 0 ? 0u - static_cast<uint32_t>(quotient)
+                            : static_cast<uint32_t>(quotient);
   FInt angle = FIntHalfPi * FInt::FromInt(SearchValueInTanTable(d));
   angle >>= 9;
   if (y.raw_value_ > 0) {
