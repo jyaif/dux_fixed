@@ -71,10 +71,14 @@ class FInt {
   }
 
   // Returns an approximation as a double of the fixed point number.
-  [[nodiscard]] double DoubleValue() const;
+  [[nodiscard]] constexpr double DoubleValue() const {
+    return static_cast<double>(raw_value_) / (1 << kShift);
+  }
 
   // Returns an approximation as a float of the fixed point number.
-  [[nodiscard]] float FloatValue() const;
+  [[nodiscard]] constexpr float FloatValue() const {
+    return static_cast<float>(raw_value_) / (1 << kShift);
+  }
 
   // Returns the absolute value of |this| object.
   [[nodiscard]] constexpr FInt Abs() const {

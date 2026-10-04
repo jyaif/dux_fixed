@@ -4,18 +4,6 @@
 
 namespace dux {
 
-double FInt::DoubleValue() const {
-  double v = static_cast<double>(raw_value_);
-  v /= (1 << kShift);
-  return v;
-}
-
-float FInt::FloatValue() const {
-  float v = static_cast<float>(raw_value_);
-  v /= (1 << kShift);
-  return v;
-}
-
 FInt FInt::Sqrt() const {
   assert(raw_value_ >= 0);
   if (raw_value_ <= 0) {
